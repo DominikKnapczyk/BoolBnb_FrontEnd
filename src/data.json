@@ -1,0 +1,165 @@
+{
+  "apartments": [
+    {
+      "id": 1,
+      "title": "Appartamento spazioso con vista sul mare",
+      "description": "Questo appartamento moderno e spazioso offre una vista mozzafiato sul mare. Dispone di una grande terrazza attrezzata, una cucina completamente attrezzata e due camere da letto confortevoli. Perfetto per una famiglia o un gruppo di amici che cercano una vacanza rilassante sulla costa.",
+      "image": "https://picsum.photos/id/1018/800/600",
+      "price": 120,
+      "location": "Liguria, Italia"
+    },
+    {
+      "id": 2,
+      "title": "Appartamento elegante nel centro storico",
+      "description": "Questo appartamento elegante si trova nel cuore del centro storico. Dispone di un soggiorno spazioso, una cucina completamente attrezzata e due camere da letto confortevoli. Ideale per una coppia o un piccolo gruppo di amici che vogliono esplorare la città.",
+      "image": "https://picsum.photos/id/1015/800/600",
+      "price": 90,
+      "location": "Firenze, Italia"
+    },
+    {
+      "id": 3,
+      "title": "Appartamento panoramico con giardino",
+      "description": "Questo appartamento panoramico si trova in cima a una collina e offre una vista spettacolare sulla campagna circostante. Dispone di un grande giardino, una cucina completamente attrezzata e due camere da letto confortevoli. Perfetto per una vacanza rilassante lontano dal caos della città.",
+      "image": "https://picsum.photos/id/1019/800/600",
+      "price": 150,
+      "location": "Toscana, Italia"
+    },
+    {
+      "id": 4,
+      "title": "Appartamento moderno con piscina",
+      "description": "Questo appartamento moderno si trova in una zona residenziale tranquilla e offre una grande piscina privata. Dispone di un soggiorno luminoso, una cucina completamente attrezzata e tre camere da letto confortevoli. Perfetto per una famiglia o un gruppo di amici che cercano una vacanza rilassante.",
+      "image": "https://picsum.photos/id/1020/800/600",
+      "price": 180,
+      "location": "Costa del Sol, Spagna"
+    },
+    {
+      "id": 5,
+      "title": "Appartamento rustico con camino",
+      "description": "Questo appartamento rustico si trova in una cascina tradizionale e offre un'atmosfera calda e accogliente. Dispone di un camino, una cucina completamente attrezzata e due camere da letto confortevoli. Perfetto per una coppia o una piccola famiglia che vogliono vivere un'esperienza autentica in campagna.",
+      "image": "https://picsum.photos/id/1021/800/600",
+      "price": 100,
+      "location": "Piemonte, Italia"
+    },
+    {
+      "id": 6,
+      "title": "Villa di lusso con vista sul mare",
+      "description": "Questa villa di lusso offre una vista spettacolare sul mare e dispone di una grande piscina privata. È composta da tre camere da letto spaziose, tre bagni e una cucina completamente attrezzata. Perfetta per una vacanza di lusso con la famiglia o gli amici.",
+      "image": "https://picsum.photos/id/1022/800/600",
+      "price": 500,
+      "location": "Côte d'Azur, Francia"
+      },
+      {
+      "id": 7,
+      "title": "Loft moderno nel centro città",
+      "description": "Questo loft moderno e di design si trova nel cuore del centro città. Dispone di un ampio spazio aperto, una cucina completamente attrezzata e un bagno con vasca idromassaggio. Ideale per una coppia che cerca un soggiorno unico e di classe.",
+      "image": "https://picsum.photos/id/1023/800/600",
+      "price": 200,
+      "location": "New York, USA"
+      },
+      {
+      "id": 8,
+      "title": "Chalet di montagna con vista panoramica",
+      "description": "Questo chalet di montagna offre una vista panoramica sulle montagne circostanti e dispone di un camino per creare un'atmosfera accogliente e romantica. È composto da una camera da letto, un bagno con vasca idromassaggio e una cucina completamente attrezzata. Perfetto per una coppia in cerca di una fuga romantica in montagna.",
+      "image": "https://picsum.photos/id/1024/800/600",
+      "price": 250,
+      "location": "Alpi Svizzere"
+      },
+      {
+      "id": 9,
+      "title": "Appartamento storico con terrazza panoramica",
+      "description": "Questo appartamento storico si trova in un edificio del XV secolo e offre una terrazza panoramica con vista sulla città. Dispone di una camera da letto, un bagno e una cucina completamente attrezzata. Perfetto per una coppia in cerca di un soggiorno romantico nel centro storico.",
+      "image": "https://picsum.photos/id/1025/800/600",
+      "price": 150,
+      "location": "Barcellona, Spagna"
+      },
+      {
+      "id": 10,
+      "title": "Appartamento luminoso con vista sul parco",
+      "description": "Questo appartamento luminoso si trova di fronte a un bellissimo parco e offre una vista spettacolare dalla finestra del soggiorno. Dispone di due camere da letto, un bagno e una cucina completamente attrezzata. Perfetto per una famiglia o un gruppo di amici che vogliono godersi la natura e la città.",
+      "image": "https://picsum.photos/id/1026/800/600",
+      "price": 120,
+      "location": "Berlino, Germania"
+      },
+      {
+        "id": 11,
+        "title": "Casa vacanze con piscina privata",
+        "description": "Questa casa vacanze si trova immersa nel verde e dispone di una grande piscina privata. È composta da tre camere da letto, due bagni e una cucina completamente attrezzata. Perfetta per una vacanza rilassante con la famiglia o gli amici.",
+        "image": "https://picsum.photos/id/1027/800/600",
+        "price": 350,
+        "location": "Toscana, Italia"
+        },
+        {
+        "id": 12,
+        "title": "Attico di lusso con vista sulla città",
+        "description": "Questo attico di lusso offre una vista spettacolare sulla città e dispone di una grande terrazza privata. È composto da due camere da letto spaziose, due bagni e una cucina completamente attrezzata. Perfetto per una vacanza di lusso in città.",
+        "image": "https://picsum.photos/id/1028/800/600",
+        "price": 700,
+        "location": "Dubai, Emirati Arabi Uniti"
+        },
+        {
+        "id": 13,
+        "title": "Casa vacanze con vista sulle montagne",
+        "description": "Questa casa vacanze offre una vista panoramica sulle montagne circostanti e dispone di un giardino privato. È composta da due camere da letto, un bagno e una cucina completamente attrezzata. Perfetta per una vacanza tranquilla in montagna.",
+        "image": "https://picsum.photos/id/1029/800/600",
+        "price": 200,
+        "location": "Patagonia, Argentina"
+        },
+        {
+        "id": 14,
+        "title": "Cottage rustico vicino al lago",
+        "description": "Questo cottage rustico si trova vicino a un bellissimo lago e dispone di un camino per creare un'atmosfera accogliente e romantica. È composto da una camera da letto, un bagno con vasca idromassaggio e una cucina completamente attrezzata. Perfetto per una coppia in cerca di una fuga romantica.",
+        "image": "https://picsum.photos/id/1031/800/600",
+        "price": 180,
+        "location": "Lake District, Regno Unito"
+        },
+        {
+        "id": 15,
+        "title": "Appartamento di lusso con vista sul fiume",
+        "description": "Questo appartamento di lusso si trova di fronte a un bellissimo fiume e dispone di una grande terrazza privata. È composto da due camere da letto spaziose, due bagni e una cucina completamente attrezzata. Perfetto per una vacanza di lusso in città.",
+        "image": "https://picsum.photos/id/1032/800/600",
+        "price": 600,
+        "location": "Londra, Regno Unito"
+        },
+        {
+          "id": 16,
+          "title": "Villa con vista sull'oceano",
+          "description": "Questa villa offre una vista mozzafiato sull'oceano e dispone di una piscina privata. È composta da tre camere da letto, due bagni e una cucina completamente attrezzata. Perfetta per una vacanza di lusso al mare.",
+          "image": "https://picsum.photos/id/1032/800/600",
+          "price": 1200,
+          "location": "Bali, Indonesia"
+          },
+          {
+          "id": 17,
+          "title": "Chalet di montagna con sauna",
+          "description": "Questo chalet di montagna si trova immerso nella natura e dispone di una sauna privata. È composto da due camere da letto, un bagno e una cucina completamente attrezzata. Perfetto per una vacanza invernale rilassante.",
+          "image": "https://picsum.photos/id/1033/800/600",
+          "price": 300,
+          "location": "Alpi francesi, Francia"
+          },
+          {
+          "id": 18,
+          "title": "Appartamento moderno nel centro storico",
+          "description": "Questo appartamento moderno si trova nel cuore del centro storico e dispone di una terrazza privata. È composto da una camera da letto, un bagno e una cucina completamente attrezzata. Perfetto per una vacanza culturale.",
+          "image": "https://picsum.photos/id/1035/800/600",
+          "price": 150,
+          "location": "Barcellona, Spagna"
+          },
+          {
+          "id": 19,
+          "title": "Casa vacanze in riva al mare",
+          "description": "Questa casa vacanze si trova direttamente sulla spiaggia e dispone di un grande giardino privato. È composta da due camere da letto, un bagno e una cucina completamente attrezzata. Perfetta per una vacanza al mare con la famiglia.",
+          "image": "https://picsum.photos/id/1036/800/600",
+          "price": 250,
+          "location": "Costa del Sol, Spagna"
+          },
+          {
+          "id": 20,
+          "title": "Appartamento di design con vista sulla città",
+          "description": "Questo appartamento di design offre una vista panoramica sulla città e dispone di una grande terrazza privata. È composto da due camere da letto spaziose, due bagni e una cucina completamente attrezzata. Perfetto per una vacanza di lusso in città.",
+          "image": "https://picsum.photos/id/1037/800/600",
+          "price": 800,
+          "location": "New York City, Stati Uniti"
+          }
+        
+  ]
+}
