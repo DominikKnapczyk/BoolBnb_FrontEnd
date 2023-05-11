@@ -37,14 +37,21 @@ export default {
   gap: 20px;
   margin: 0 auto;
   justify-content: center; /* Aggiunto per allineare al centro */
-
 }
 
-@media (max-width: 767px) {
+.card-column {
+  display: flex;
+  justify-content: center;
+  width: 250px;
+}
+
+
+@media (min-width: 576px) and (max-width: 767px) {
   .card-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, calc(50% - 10px)));
   }
 }
+
 
 @media (min-width: 768px) and (max-width: 991px) {
   .card-grid {
