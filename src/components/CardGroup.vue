@@ -42,16 +42,14 @@ export default {
 .card-column {
   display: flex;
   justify-content: center;
-  width: 250px;
+  width: 100%;
 }
 
-
-@media (min-width: 576px) and (max-width: 767px) {
-  .card-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, calc(50% - 10px)));
+@media (max-width: 767px) {
+  .card-column {
+    width: 100%;
   }
 }
-
 
 @media (min-width: 768px) and (max-width: 991px) {
   .card-grid {
@@ -65,14 +63,12 @@ export default {
   }
 }
 
-
-
-
 .card-column {
   display: flex;
   justify-content: center;
 }
 </style>
+
 
 
 
