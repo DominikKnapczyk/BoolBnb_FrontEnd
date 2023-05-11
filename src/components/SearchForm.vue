@@ -1,17 +1,34 @@
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      localita: ''
+      localita: '',
     }
   },
   methods: {
-    ricerca() {
-      // qui puoi inserire il codice per avviare la ricerca
-    }
-  }
+    async ricerca() {
+      try {
+        const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
+          params: {
+            key: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
+            limit: 1,
+          },
+        });
+
+
+        const coordinate = response.data.results[0].position;
+        console.log(`Latitudine: ${coordinate.lat}, Longitudine: ${coordinate.lon}`);
+        // qui puoi usare le coordinate per fare una richiesta al tuo backend
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
 }
 </script>
+
 
 <template>
   <div class="row justify-content-center w-100">
