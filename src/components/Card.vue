@@ -53,7 +53,7 @@ export default {
 
 
 .card.horizontal .card-img-top {
-  width: 50%;
+  width: 45%;
 }
 
 .card.horizontal .card-body {

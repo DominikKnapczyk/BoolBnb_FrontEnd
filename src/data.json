@@ -124,7 +124,7 @@
           "id": 16,
           "title": "Villa con vista sull'oceano",
           "description": "Questa villa offre una vista mozzafiato sull'oceano e dispone di una piscina privata. È composta da tre camere da letto, due bagni e una cucina completamente attrezzata. Perfetta per una vacanza di lusso al mare.",
-          "image": "https://picsum.photos/id/1032/800/600",
+          "image": "https://picsum.photos/id/1033/800/600",
           "price": 1200,
           "location": "Bali, Indonesia"
           },
@@ -132,7 +132,7 @@
           "id": 17,
           "title": "Chalet di montagna con sauna",
           "description": "Questo chalet di montagna si trova immerso nella natura e dispone di una sauna privata. È composto da due camere da letto, un bagno e una cucina completamente attrezzata. Perfetto per una vacanza invernale rilassante.",
-          "image": "https://picsum.photos/id/1033/800/600",
+          "image": "https://picsum.photos/id/1035/800/600",
           "price": 300,
           "location": "Alpi francesi, Francia"
           },
@@ -140,7 +140,7 @@
           "id": 18,
           "title": "Appartamento moderno nel centro storico",
           "description": "Questo appartamento moderno si trova nel cuore del centro storico e dispone di una terrazza privata. È composto da una camera da letto, un bagno e una cucina completamente attrezzata. Perfetto per una vacanza culturale.",
-          "image": "https://picsum.photos/id/1035/800/600",
+          "image": "https://picsum.photos/id/1036/800/600",
           "price": 150,
           "location": "Barcellona, Spagna"
           },
@@ -148,7 +148,7 @@
           "id": 19,
           "title": "Casa vacanze in riva al mare",
           "description": "Questa casa vacanze si trova direttamente sulla spiaggia e dispone di un grande giardino privato. È composta da due camere da letto, un bagno e una cucina completamente attrezzata. Perfetta per una vacanza al mare con la famiglia.",
-          "image": "https://picsum.photos/id/1036/800/600",
+          "image": "https://picsum.photos/id/1037/800/600",
           "price": 250,
           "location": "Costa del Sol, Spagna"
           },
@@ -156,7 +156,7 @@
           "id": 20,
           "title": "Appartamento di design con vista sulla città",
           "description": "Questo appartamento di design offre una vista panoramica sulla città e dispone di una grande terrazza privata. È composto da due camere da letto spaziose, due bagni e una cucina completamente attrezzata. Perfetto per una vacanza di lusso in città.",
-          "image": "https://picsum.photos/id/1037/800/600",
+          "image": "https://picsum.photos/id/1038/800/600",
           "price": 800,
           "location": "New York City, Stati Uniti"
           }

@@ -36,7 +36,7 @@ export default {
       <h1 class="title mb-4">BoolBnB</h1>
       <SearchForm />
       <router-link to="/advanced-search">
-        <button class="btn btn-secondary mt-4 d-flex align-items-center justify-content-center">
+        <button class="btn btn-outline-secondary mt-4">
           Ricerca avanzata
         </button>
       </router-link>
