@@ -1,6 +1,6 @@
 <script>
-import Card from './Card.vue';
-import data from '../data.json';
+import Card from './elements/SponsoredCard.vue';
+import data from '../../data.json';
 
 export default {
   components: {

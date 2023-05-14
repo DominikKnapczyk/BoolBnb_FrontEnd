@@ -1,7 +1,7 @@
 <template>
   <div class="card-container">
-    <div class="card px-4" :class="[isMobile ? 'horizontal' : 'vertical']">
-      <img class="card-img-top rounded-top my-2" :src="apartment.image" alt="Card image cap">
+    <div class="card" :class="[isMobile ? 'horizontal' : 'vertical']">
+      <img class="card-img-top rounded-top p-2" :src="apartment.image" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{ apartment.title }}</h5>
         <p class="card-text" style="margin-bottom: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{ apartment.description }}</p>
@@ -51,6 +51,11 @@ export default {
   border-radius: 10px;
 }
 
+.card-img-top {
+  object-fit: cover;
+  height: auto;
+  border-radius: 10px;
+}
 
 .card.horizontal .card-img-top {
   width: 45%;
@@ -59,29 +64,5 @@ export default {
 .card.horizontal .card-body {
   width: 60%;
   padding-left: 20px;
-}
-
-@media (max-width: 767px) {
-
-  .card-img-top {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    object-fit: cover;
-    height: auto;
-  }
-}
-
-@media (min-width: 768px) {
-
-  .card-img-top {
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-    object-fit: cover;
-    height: auto;
-  }
 }
 </style>

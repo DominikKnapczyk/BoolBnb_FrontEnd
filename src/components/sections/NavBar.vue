@@ -50,7 +50,3 @@ export default {
 //     return view('auth.register');
 // });
 </script>
-
-
-<style scoped>
-</style>

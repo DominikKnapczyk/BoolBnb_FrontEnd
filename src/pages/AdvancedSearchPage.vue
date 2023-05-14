@@ -1,9 +1,17 @@
-<template>
-  RICERCA AVANZATA
-</template>
-
 <script>
+import NavBar from '../components/sections/NavBar.vue'
+import AdvancedSearchForm from '../components/forms/AdvancedSearchForm.vue'
+
+export default {
+  name: 'AdvancedSearch',
+  components: {
+    NavBar,
+    AdvancedSearchForm,
+  },
+}
 </script>
 
-<style>
-</style>
+<template>
+  <NavBar />
+  <AdvancedSearchForm />
+</template>

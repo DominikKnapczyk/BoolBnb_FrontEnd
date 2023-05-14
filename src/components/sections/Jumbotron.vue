@@ -1,21 +1,21 @@
 <script>
-import SearchForm from './SearchForm.vue'
+import HomeSearchForm from '../forms/HomeSearchForm.vue'
 
 export default {
   name: 'Jumbotron',
   components: {
-    SearchForm,
+    HomeSearchForm,
   },
   data() {
     return {
       currentBackground: 0,
       backgrounds: [
-        '/public/backgrounds/background0.jpg',
-        '/public/backgrounds/background1.jpg',
-        '/public/backgrounds/background2.jpg',
-        '/public/backgrounds/background3.jpg',
-        '/public/backgrounds/background4.jpg',
-        '/public/backgrounds/background5.jpg',
+        '/backgrounds/background0.jpg',
+        '/backgrounds/background1.jpg',
+        '/backgrounds/background2.jpg',
+        '/backgrounds/background3.jpg',
+        '/backgrounds/background4.jpg',
+        '/backgrounds/background5.jpg',
       ]
     }
   },
@@ -34,7 +34,7 @@ export default {
   <div class="jumbotron d-flex justify-content-center align-items-center">
     <div class="container d-flex flex-column align-items-center">
       <h1 class="title mb-4">BoolBnB</h1>
-      <SearchForm />
+      <HomeSearchForm />
       <router-link to="/advanced-search">
         <button class="btn btn-outline-secondary mt-4">
           Ricerca avanzata
@@ -48,7 +48,7 @@ export default {
 .jumbotron {
   height: 500px;
   background: linear-gradient(to bottom, #888, #fff);
-  background-image: url("/public/backgrounds/background0.jpg");
+  background-image: url("/backgrounds/background0.jpg");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
