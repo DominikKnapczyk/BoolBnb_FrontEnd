@@ -10,10 +10,12 @@
 </template>
 
 <script>
-import TomTomMixin from '../../mixins/TomTomMixin.js'; // Assicurati di impostare il percorso corretto
+import TomTomMixin from '../../mixins/TomTomMixin.js';
+import { getAppartamenti } from '../../mixins/api.js';
+import router from '../../router';
 
 export default {
-  mixins: [TomTomMixin], // Aggiungi il mixin
+  mixins: [TomTomMixin],
 
   data() {
     return {
@@ -24,16 +26,22 @@ export default {
   methods: {
     async ricerca() {
       const coordinate = await this.searchLocation();
-      // Usa le coordinate qui o fai altro con esse
+
+      if (coordinate) {
+        const appartamenti = await getAppartamenti(coordinate, 20);
+        console.log(appartamenti); // Puoi fare qualcos'altro con i dati ottenuti dal backend
+
+        if (appartamenti == null) {
+          // Reindirizza l'utente alla pagina AdvancedSearchForm solo se l'array degli appartamenti è restituito con successo
+          router.push('/advanced-search');
+        }
+      }
     },
   },
 }
 </script>
 
-
-
 <style lang="scss" scoped>
-
 button {
   background-color: rgba($color: #000000, $alpha: 0.6);
   color: white;
@@ -47,5 +55,4 @@ input:focus {
   outline: #323232;
   box-shadow: none;
 }
-
 </style>

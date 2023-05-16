@@ -28,15 +28,15 @@ export default {
 .card-container {
   margin-top: 20px;
   margin-bottom: 20px;
-  max-width: 1200px; /* limita la larghezza massima della griglia */
-  margin: 0 auto; /* centra il contenitore della griglia */
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .card-grid {
   display: grid;
   gap: 20px;
   margin: 0 auto;
-  justify-content: center; /* Aggiunto per allineare al centro */
+  justify-content: center;
 }
 
 .card-column {

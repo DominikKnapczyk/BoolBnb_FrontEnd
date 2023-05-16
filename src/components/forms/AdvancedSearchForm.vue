@@ -48,46 +48,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import TomTomMixin from '../../mixins/TomTomMixin.js';
 
-export default {
-  mixins: [TomTomMixin],
-
-  data() {
-    return {
-      localita: '',
-      radius: 20,
-      priceRange: '',
-      apartments: [],
-    };
-  },
-
-  methods: {
-    async searchApartments() {
-      try {
-        const coordinates = await this.searchLocation();
-
-        // Stampa le coordinate su console
-        console.log(`Latitudine: ${coordinates.lat}, Longitudine: ${coordinates.lon}`);
-
-        // Esegui la chiamata al tuo backend per ottenere gli appartamenti filtrati
-        const response = await axios.get('/api/apartments', {
-          params: {
-            radius: this.radius,
-            priceRange: this.priceRange,
-            latitude: coordinates.lat,
-            longitude: coordinates.lon,
-          },
-        });
-
-        this.apartments = response.data;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-  },
-};
 </script>
 
 
