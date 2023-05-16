@@ -2,15 +2,18 @@
   <div class="card-container">
     <div class="card" :class="[isMobile ? 'horizontal' : 'vertical']">
       <img class="card-img-top rounded-top p-2" :src="apartment.image" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{ apartment.title }}</h5>
+      <div class="card-body d-flex flex-column justify-content-between">
+        <h5 class="card-title">{{ apartment.title }}</h5>
         <p class="card-text" style="margin-bottom: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{ apartment.description }}</p>
-        <p class="card-text">{{ apartment.price }} € / notte</p>
-        <a href="#" class="btn btn-secondary">Scopri di più</a>
+        <div class="card-footer mt-4">
+          <p class="card-text">{{ apartment.price }} € / notte</p>
+          <a href="#" class="btn btn-secondary">Scopri di più</a>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -43,6 +46,7 @@ export default {
 .card {
   border-radius: 10px;
   width: 100%;
+  min-height: 100%;
 }
 
 .card.horizontal {
@@ -65,4 +69,12 @@ export default {
   width: 60%;
   padding-left: 20px;
 }
+
+.card-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
 </style>
