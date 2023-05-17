@@ -40,6 +40,7 @@ import TomTomMixin from '../../mixins/TomTomMixin.js';
 import SuggestionMixin from '../../mixins/SuggestionMixin.js';
 import router from '../../router';
 
+
 export default {
   mixins: [TomTomMixin],
   mixins: [SuggestionMixin],
