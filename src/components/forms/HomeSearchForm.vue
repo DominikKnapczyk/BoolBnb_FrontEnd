@@ -47,6 +47,7 @@ import router from '../../router';
 
 export default {
   mixins: [TomTomMixin],
+  mixins: [TomTomMixin],
 
   data() {
     return {
