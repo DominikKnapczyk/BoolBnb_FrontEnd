@@ -36,6 +36,8 @@
         <input type="number" class="form-control" v-model="raggio" />
       </div>
 
+      <button @click="ricerca">CERCA</button>
+
     </form>
 
     <div class="map">
@@ -76,13 +78,15 @@ export default {
   methods: {
     async ricerca() {
       const coordinate = await this.searchLocation();
+      const raggio = this.raggio;
+      console.log(coordinate);
 
       if (coordinate) {
         const appartamenti = await getAppartamenti(coordinate, raggio);
         console.log(appartamenti);
 
         if (appartamenti != null) {
-          // GENERA LE CARD SE IL BACKEND RESTITUISCE UN ARRAY DI APPARTAMENTI
+          // GENERA LE CARD SE IL BACKEND RESTITUISCE UN ARRAY DI APPARTAM
         }
       }
     },
