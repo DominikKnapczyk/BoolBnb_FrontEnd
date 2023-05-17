@@ -12,11 +12,13 @@ export default {
         });
 
         const coordinate = response.data.results[0].position;
-        console.log(`Latitudine: ${coordinate.lat}, Longitudine: ${coordinate.lon}`);
+        const coordinate_localita = response.data.results[0].address.freeformAddress;
+        // console.log(coordinate_localita);
+        // console.log(`Latitudine: ${coordinate.lat}, Longitudine: ${coordinate.lon}`);
         // Qui puoi usare le coordinate per fare una richiesta al tuo backend
 
         // Puoi anche ritornare le coordinate, se necessario
-        return coordinate;
+        return { coordinate, coordinate_localita };
       } catch (error) {
         console.error(error);
       }

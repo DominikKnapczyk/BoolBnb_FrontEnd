@@ -1,23 +1,22 @@
 <template>
   <div class="container">
-
-
     <form class="mt-4 col-6" @submit.prevent>
       <div class="form-group">
+        <label>Posizione selezionata:</label>
         <!-- Input per la località -->
         <div class="autocomplete-wrapper">
           <input 
-          type="text" 
-          class="form-control"
-          placeholder="Inserisci la località" 
-          v-model="localita" 
-          @input="autocomplete"
-          @blur="onBlurInput"
-          @focus="onFocusInput"
-          @keydown.arrow-up.prevent="selezionaSuggerimentoPrecedente"
-          @keydown.arrow-down.prevent="selezionaSuggerimentoSuccessivo"
-          @keydown.enter="selezionaSuggerimentoAttuale"
-          /> {{ this.localita }}
+            type="text" 
+            class="form-control"
+            placeholder="Inserisci la località" 
+            v-model="localita" 
+            @input="autocomplete"
+            @blur="onBlurInput"
+            @focus="onFocusInput"
+            @keydown.arrow-up.prevent="selezionaSuggerimentoPrecedente"
+            @keydown.arrow-down.prevent="selezionaSuggerimentoSuccessivo"
+            @keydown.enter="selezionaSuggerimentoAttuale"
+          /> 
 
           <div v-if="suggerimenti.length > 0 && isInputFocused" class="autocomplete">
             <ul class="list-group">
@@ -28,145 +27,62 @@
               </li>
             </ul>
           </div>
-
-
         </div>
       </div>
 
-      <div class="form-group">
+      <div class="form-group my-2">
         <!-- Input per il raggio -->
         <label>Raggio (km):</label>
-        <input type="number" class="form-control" v-model="radius" />
+        <input type="number" class="form-control" v-model="raggio" />
       </div>
 
-      <!-- Bottone per avviare la ricerca -->
-      <button type="submit" class="btn btn-secondary my-3 w-100">Cerca</button>
     </form>
 
     <div class="map">
       <!-- QUI MAPPA TOMTOM -->
     </div>
-
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import TomTomMixin from '../../mixins/TomTomMixin.js';
+import SuggestionMixin from '../../mixins/SuggestionMixin.js';
 import { getAppartamenti } from '../../mixins/api.js';
 import router from '../../router';
 
 export default {
-  mixins: [TomTomMixin],
+  mixins: [TomTomMixin, SuggestionMixin],
 
   data() {
     return {
       localita: '',
-      suggerimenti: [],
-      isInputFocused: false,
-      suggerimentoAttualeIndex: null,
-      
+      raggio: '',
+      coordinate_localita: '',
+      autocompilato: false,
     };
   },
 
-  methods: {
-    async autocomplete() {
-      if (this.localita.length > 0) {
-        try {
-          const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
-          params: {
-            key: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
-            limit: 5,
-          },
-        });
-
-          this.suggerimenti = response.data.results.slice(0, 5).map(result => result.address.freeformAddress);
-          const suggerimentiArray = Object.values(this.suggerimenti);
-          console.log(suggerimentiArray);
-
-
-        } catch (error) {
-          // console.error(error);
-        }
-      } else {
-        this.suggerimenti = [];
-      }
-    },
-
-
-    selezionaSuggerimento(suggerimento) {
-    this.localita = suggerimento;
-    this.suggerimenti = [];
+  mounted() {
+    const query = this.$route.query;
+    if (query.raggio && query.coordinate_localita && !this.autocompilato) {
+      this.raggio = query.raggio;
+      this.localita = query.coordinate_localita;
+      console.log(query.coordinate_localita);
+      this.autocompilato = true;
+    }
   },
 
-    resetSuggerimenti() {
-      if (!this.isInputFocused) {
-        this.suggerimenti = [];
-      }
-    },
-
-    onFocusInput() {
-      this.isInputFocused = true;
-    },
-
-    onBlurInput() {
-    this.isInputFocused = false;
-    },
-
-    selezionaSuggerimento(suggerimento) {
-      this.localita = suggerimento;
-      this.suggerimenti = [];
-      console.log('Suggerimento selezionato:', suggerimento);
-    },
-
-    hideSuggerimenti(event) {
-      if (!this.$el.contains(event.target)) {
-        this.suggerimenti = [];
-      }
-    },
-
-    selezionaSuggerimentoPrecedente() {
-  if (this.suggerimenti.length > 0) {
-    // Calcola l'indice del suggerimento precedente
-    const indicePrecedente = (this.suggerimentoAttualeIndex === null ? this.suggerimenti.length - 1 : this.suggerimentoAttualeIndex - 1 + this.suggerimenti.length) % this.suggerimenti.length;
-
-    // Imposta il suggerimento precedente come suggerimento attuale
-    this.suggerimentoAttualeIndex = indicePrecedente;
-  }
-},
-
-selezionaSuggerimentoSuccessivo() {
-  if (this.suggerimenti.length > 0) {
-    // Calcola l'indice del suggerimento successivo
-    const indiceSuccessivo = (this.suggerimentoAttualeIndex === null ? 0 : this.suggerimentoAttualeIndex + 1) % this.suggerimenti.length;
-
-    // Imposta il suggerimento successivo come suggerimento attuale
-    this.suggerimentoAttualeIndex = indiceSuccessivo;
-  }
-},
-
-
-selezionaSuggerimentoAttuale() {
-  if (this.suggerimenti.length > 0 && this.suggerimentoAttualeIndex !== null) {
-    const suggerimentoAttuale = this.suggerimenti[this.suggerimentoAttualeIndex];
-    this.localita = suggerimentoAttuale;
-    this.suggerimenti = [];
-  } else {
-    this.ricerca();
-  }
-},
-
-    
-
+  methods: {
     async ricerca() {
       const coordinate = await this.searchLocation();
 
       if (coordinate) {
-        const appartamenti = await getAppartamenti(coordinate, 20);
+        const appartamenti = await getAppartamenti(coordinate, raggio);
         console.log(appartamenti);
 
-        if (appartamenti == null) {
-          router.push('/advanced-search');
+        if (appartamenti != null) {
+          // GENERA LE CARD SE IL BACKEND RESTITUISCE UN ARRAY DI APPARTAMENTI
         }
       }
     },
@@ -227,7 +143,7 @@ input:focus {
 }
 
 .autocomplete li:hover {
-  background-color:  rgba($color: #000000, $alpha: 0.6);
+  background-color: rgba($color: #000000, $alpha: 0.6);
   color: white;
 }
 
@@ -250,7 +166,6 @@ input:focus {
   background-color: rgba($color: #000000, $alpha: 0.6);
   color: white;
 }
-
 </style>
 
 
