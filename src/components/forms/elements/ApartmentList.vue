@@ -49,22 +49,29 @@ export default {
   },
   methods: {
     async updateList() {
-  try {
-    const coordinate = await this.searchLocation(this.localita);
-    console.log('Coordinate:', coordinate);
-    console.log('Raggio:', this.raggio);
-    if (coordinate) {
-      const response = await getAppartamenti(coordinate.coordinate, this.raggio);
-      console.log('Response:', response);
-      if (response) {
-        this.apartments = response;
+      try {
+        const coordinate = await this.searchLocation(this.localita);
+        console.log('Coordinate:', coordinate);
+        console.log('Raggio:', this.raggio);
+        if (coordinate) {
+          const response = await getAppartamenti(coordinate.coordinate, this.raggio);
+          console.log('Response:', response);
+          if (response) {
+            this.apartments = response;
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
-    }
-  } catch (error) {
-    console.error(error);
-  }
-},
+    },
 
+  },
+
+  props: {
+    listServices: Array,
+    roomsNum: Number,
+    singleBeds: Number,
+    doubleBeds: Number
   },
 };
 </script>

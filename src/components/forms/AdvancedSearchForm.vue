@@ -2,54 +2,47 @@
   <div class="container my-5">
     <div class="row">
       <div class="col-6">
-      <form class="mt-4" @submit.prevent @submit="submitForm">
-        <div class="form-group">
+        <form class="mt-4" @submit.prevent @submit="submitForm">
+          <div class="form-group">
 
-          <label>Posizione selezionata:</label>
-          <!-- Input per la località -->
-          <div class="autocomplete-wrapper">
-            <input 
-              type="text" 
-              class="form-control"
-              placeholder="Inserisci la località" 
-              v-model="localita" 
-              @input="autocomplete"
-              @blur="onBlurInput"
-              @focus="onFocusInput"
-              @keydown.arrow-up.prevent="selezionaSuggerimentoPrecedente"
-              @keydown.arrow-down.prevent="selezionaSuggerimentoSuccessivo"
-              @keydown.enter="selezionaSuggerimentoAttuale"
-            /> 
+            <label>Posizione selezionata:</label>
+            <!-- Input per la località -->
+            <div class="autocomplete-wrapper">
+              <input type="text" class="form-control" placeholder="Inserisci la località" v-model="localita"
+                @input="autocomplete" @blur="onBlurInput" @focus="onFocusInput"
+                @keydown.arrow-up.prevent="selezionaSuggerimentoPrecedente"
+                @keydown.arrow-down.prevent="selezionaSuggerimentoSuccessivo"
+                @keydown.enter="selezionaSuggerimentoAttuale" />
 
-            <div v-if="suggerimenti.length > 0 && isInputFocused" class="autocomplete">
-              <ul class="list-group">
-                <li v-for="(suggerimento, index) in suggerimenti" :key="index" class="list-group-item" 
+              <div v-if="suggerimenti.length > 0 && isInputFocused" class="autocomplete">
+                <ul class="list-group">
+                  <li v-for="(suggerimento, index) in suggerimenti" :key="index" class="list-group-item"
                     @mousedown="selezionaSuggerimento(suggerimento)"
                     :class="{ 'selected': index === suggerimentoAttualeIndex }">
-                  {{ suggerimento }}
-                </li>
-              </ul>
+                    {{ suggerimento }}
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="form-group my-2">
-          <!-- Input per il raggio -->
-          <label>Raggio (km):</label>
-          <input type="number" class="form-control" v-model="raggio" />
-        </div>
+          <div class="form-group my-2">
+            <!-- Input per il raggio -->
+            <label>Raggio (km):</label>
+            <input type="number" class="form-control" v-model="raggio" />
+          </div>
 
 
-      </form>
+        </form>
       </div>
       <div class="col-6">
         <LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" />
       </div>
 
-      
-        <AppartamentList :localita="localita" :raggio="raggio" />
-     
-  </div>
+
+      <AppartamentList :localita="localita" :raggio="raggio" />
+
+    </div>
 
   </div>
 </template>
@@ -81,36 +74,36 @@ export default {
   },
 
   mounted() {
-  const query = this.$route.query;
-  if (query.raggio && query.coordinate_localita && !this.autocompilato) {
-    this.raggio = query.raggio;
-    this.localita = query.coordinate_localita;
-    this.autocompilato = true;
-  } else {
-    // Imposta la posizione di Roma come predefinita
-    this.localita = '';
-  }
-},
+    const query = this.$route.query;
+    if (query.raggio && query.coordinate_localita && !this.autocompilato) {
+      this.raggio = query.raggio;
+      this.localita = query.coordinate_localita;
+      this.autocompilato = true;
+    } else {
+      // Imposta la posizione di Roma come predefinita
+      this.localita = '';
+    }
+  },
 
 
 
   methods: {
-  async updateMap() {
-  const response = await this.searchLocation();
-  const coordinate = response.coordinate;
-  const raggio = this.raggio;
+    async updateMap() {
+      const response = await this.searchLocation();
+      const coordinate = response.coordinate;
+      const raggio = this.raggio;
 
-  if (coordinate) {
-    const mapComponent = this.$refs.liveMap; // Riferimento al componente LiveMap
-    mapComponent.updateMap(coordinate); // Chiamiamo il metodo `updateMap` del componente LiveMap
+      if (coordinate) {
+        const mapComponent = this.$refs.liveMap; // Riferimento al componente LiveMap
+        mapComponent.updateMap(coordinate); // Chiamiamo il metodo `updateMap` del componente LiveMap
 
-    // Calcola lo zoom in base al raggio
-    const zoom = this.calculateZoom(raggio);
+        // Calcola lo zoom in base al raggio
+        const zoom = this.calculateZoom(raggio);
 
-    // Aggiorna lo zoom della mappa
-    mapComponent.updateZoom(zoom);
-  }
-},
+        // Aggiorna lo zoom della mappa
+        mapComponent.updateZoom(zoom);
+      }
+    },
 
   },
 };
@@ -176,7 +169,7 @@ input:focus {
   margin-left: auto;
   margin-right: 10px;
   background-color: rgba($color: #000000, $alpha: 0.6);
-  
+
   border: none;
   padding: 5px 10px;
   border-top-right-radius: 5px;
@@ -193,8 +186,9 @@ input:focus {
 }
 
 .map {
-  height: 400px; /* Aggiungi un'altezza appropriata alla mappa */
-  width: 100%; /* Assicurati che la mappa si estenda completamente all'interno del contenitore */
+  height: 400px;
+  /* Aggiungi un'altezza appropriata alla mappa */
+  width: 100%;
+  /* Assicurati che la mappa si estenda completamente all'interno del contenitore */
 }
-
 </style>
