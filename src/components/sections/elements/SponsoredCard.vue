@@ -1,23 +1,73 @@
 <template>
-  <div class="card-container">
-    <div class="card" :class="[isMobile ? 'horizontal' : 'vertical']">
-      <img class="card-img-top rounded-top p-2" :src="apartment.image" alt="Card image cap">
-      <div class="card-body d-flex flex-column justify-content-between">
-        <h5 class="card-title">{{ apartment.title }}</h5>
-        <p class="card-text" style="margin-bottom: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{ apartment.description }}</p>
-        <div class="card-footer mt-4">
-          <p class="card-text">{{ apartment.price }} € / notte</p>
-          <a href="#" class="btn btn-secondary">Scopri di più</a>
+  <div class="card" :class="[isMobile ? 'horizontal' : 'vertical']">
+    <div class="img-container position-relative">
+      <img
+        class="card-img-top rounded-top"
+        :src="apartment.image"
+        alt="Card image cap"
+      />
+      <div class="services">
+        <i
+          v-for="service in apartment.services"
+          :class="'me-3 text-light bi ' + service.icon"
+          :title="service.title"
+        ></i>
+        <div class="featured">Consigliato</div>
+      </div>
+    </div>
+
+    <div class="card-body d-flex flex-column justify-content-between">
+      <h5 class="card-title">{{ apartment.title }}</h5>
+      <p
+        class="card-text mb-1"
+        style="
+          margin-bottom: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        "
+      >
+        {{ apartment.description }}
+      </p>
+      <div class="container">
+        <div class="row row-cols-2">
+          <div class="col">
+            <strong>Posti letto</strong>:
+            {{ apartment.single_beds + apartment.double_beds }}<br />
+
+            <strong>Bagni</strong>: {{ apartment.bathrooms }}
+          </div>
+          <div class="col">
+            <strong>Camere</strong>: {{ apartment.rooms }}<br />
+            <strong>mq</strong>: {{ apartment.square_meters }}
+          </div>
         </div>
+      </div>
+      <div class="mt-3">
+        <p>
+          <strong>Servizi: </strong>
+          <span v-for="(service, index) in apartment.services"
+            >{{ service.title
+            }}<span v-if="index != apartment.services.length - 1">, </span>
+            <span v-else>.</span>
+          </span>
+        </p>
+      </div>
+
+      <div class="card-footer mt-4">
+        <p class="card-text text-center">
+          <span class="price">€ {{ apartment.price }}</span> / notte
+        </p>
+        <a href="#" class="btn btn-secondary">Scopri di più</a>
       </div>
     </div>
   </div>
 </template>
 
-
 <script>
 export default {
-  props: ['apartment'],
+  props: ["apartment"],
   data() {
     return {
       isMobile: false,
@@ -25,10 +75,11 @@ export default {
   },
   created() {
     this.isMobile = window.innerWidth <= 767;
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
+    console.log(this.apartment);
   },
   destroyed() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     handleResize() {
@@ -57,12 +108,11 @@ export default {
 
 .card-img-top {
   object-fit: cover;
-  height: auto;
-  border-radius: 10px;
+  height: 400px;
 }
 
 .card.horizontal .card-img-top {
-  width: 45%;
+  width: 100%;
 }
 
 .card.horizontal .card-body {
@@ -76,5 +126,27 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
 }
+i {
+  font-size: 1.5rem;
+}
 
+.services {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 100%;
+  text-align: center;
+}
+
+.price {
+  color: green;
+  font-weight: bold;
+}
+
+.featured {
+  background-color: goldenrod;
+  color: white;
+  text-align: center;
+  border-radius: 30px 30px 0px 0px;
+}
 </style>

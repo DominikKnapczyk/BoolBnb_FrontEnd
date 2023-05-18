@@ -2,10 +2,25 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <router-link class="navbar-brand" to="/">
-        <img src="path/to/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        <span class="ms-2">Logo</span>
+        <h3 class="text-danger mb-1">BoolBnB</h3>
+        <!-- <img
+          src="path/to/logo.png"
+          width="30"
+          height="30"
+          class="d-inline-block align-top"
+          alt=""
+        />
+        <span class="ms-2">Logo</span> -->
       </router-link>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
@@ -16,10 +31,10 @@
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" @click="redirectToLogin">Login</a>
+            <a class="nav-link" :href="backendUrl + '/login'">Login</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" @click="redirectToRegister">Register</a>
+            <a class="nav-link" :href="backendUrl + '/register'">Register</a>
           </li>
         </ul>
       </div>
@@ -29,15 +44,20 @@
 
 <script>
 export default {
-  methods: {
-    redirectToLogin() {
-      window.location.href = '/login';
-    },
-    redirectToRegister() {
-      window.location.href = '/register';
-    }
-  }
-}
+  data() {
+    return {
+      backendUrl: "http://localhost:8000",
+    };
+  },
+  // methods: {
+  //   redirectToLogin() {
+  //     window.location.href = `${this.backendUrl}/login`;
+  //   },
+  //   redirectToRegister() {
+  //     window.location.href = "/register";
+  //   },
+  // },
+};
 
 // LATO LARAVEL!!!
 // Aggiungere queste rotte nel file routes/web.php
