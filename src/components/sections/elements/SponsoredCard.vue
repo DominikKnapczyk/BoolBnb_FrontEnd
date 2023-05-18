@@ -47,7 +47,9 @@
         <p class="card-text text-center">
           <span class="price">€ {{ apartment.price }}</span> / notte
         </p>
-        <a href="#" class="btn btn-secondary">Scopri di più</a>
+        <router-link to="/apartment/${id}">
+          <a href="#" class="btn btn-secondary">Scopri di più</a>
+        </router-link>
       </div>
     </div>
   </div>

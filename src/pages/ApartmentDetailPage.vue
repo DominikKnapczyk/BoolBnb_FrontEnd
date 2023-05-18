@@ -12,6 +12,11 @@ export default {
   props: {
     apartment: Object,
   },
+  data() {
+    return {
+      apartment: []
+    }
+  },
 
   components: {
     NavBar,
@@ -22,9 +27,10 @@ export default {
 
   created() {
     axios
-      .get(`http://localhost:8000/api/apartments/21`)
+      .get(`http://localhost:8000/api/apartments/15`)
       .then((response) => {
-        this.appartment = response.data;
+        this.apartment = response.data[0];
+        console.log(this.apartment);
       })
   },
 }
@@ -37,30 +43,31 @@ export default {
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-end">
         <div>
-          <h4 class="card-title">Titolo appartamento</h4>
-          <p class="fw-semibold mt-3">Indirizzo: Milano</p>
+          <h4 class="card-title">{{ apartment.title }}</h4>
+          <p class="fw-semibold mt-3">Indirizzo: {{ apartment.address }}</p>
         </div>
-        <div class="fw-semibold mb-3">Prezzo: 50.00 € / notte</div>
+        <div class="fw-semibold mb-3">
+          Prezzo: <span class="text-success">{{ apartment.price }} €</span> / notte
+        </div>
       </div>
-      <img class="card-img-top rounded-top w-100 p-5" src="https://picsum.photos/id/1015/800/600" alt="">
+      <img class="card-img-top rounded-top w-100 p-5" :src="apartment.image" alt="">
       <div class="card-body pb-4">
         <h5>Descrizione:</h5>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, tempore nam?
-          Rerum fugit, similique obcaecati reiciendis nihil dolorum vel nisi laudantium
-          unde laboriosam explicabo corporis consequuntur culpa nam, temporibus tempora?
+          {{ apartment.description }}
         </p>
         <hr>
         <h5>Caratteristiche: </h5>
         <ul>
-          <li>caratteristica</li>
-          <li>caratteristica</li>
-          <li>caratteristica</li>
-          <li>caratteristica</li>
+          <li>Metratura: {{ apartment.square_meters }} mq</li>
+          <li>Stanze: {{ apartment.rooms }}</li>
+          <li>Bagni: {{ apartment.bathrooms }}</li>
+          <li>Letti doppi: {{ apartment.double_beds }}</li>
+          <li>Letti singoli: {{ apartment.single_beds }}</li>
         </ul>
         <hr>
         <h5>Servizzi aggiuntivi:</h5>
-        piscina
+        <i v-for="service in apartment.services" :class="'me-3 text-dark bi ' + service.icon" :title="service.title"></i>
       </div>
     </div>
   </div>
