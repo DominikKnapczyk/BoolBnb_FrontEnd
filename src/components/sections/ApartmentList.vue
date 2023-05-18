@@ -2,7 +2,7 @@
   <div class="container card-container my-3">
     <div class="card-grid">
       <div v-for="apartment in apartments" :key="apartment.id" class="card-column">
-        
+
       </div>
     </div>
   </div>
@@ -12,12 +12,19 @@
 
 export default {
   components: {
-    
+
   },
   data() {
     return {
-      
+
     }
-  }
+  },
+
+  props: {
+    listServices: Array,
+    roomsNum: Number,
+    singleBeds: Number,
+    doubleBeds: Number
+  },
 }
 </script>
