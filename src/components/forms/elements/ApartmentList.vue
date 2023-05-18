@@ -30,6 +30,10 @@ export default {
       type: Number,
       required: true,
     },
+    listServices: Array,
+    roomsNum: Number,
+    singleBeds: Number,
+    doubleBeds: Number
   },
   data() {
     return {
@@ -65,13 +69,6 @@ export default {
       }
     },
 
-  },
-
-  props: {
-    listServices: Array,
-    roomsNum: Number,
-    singleBeds: Number,
-    doubleBeds: Number
   },
 };
 </script>

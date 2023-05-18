@@ -1,7 +1,7 @@
 <script>
 import NavBar from '../components/sections/NavBar.vue'
 import AdvancedSearchForm from '../components/forms/AdvancedSearchForm.vue'
-import ApartmentList from '../components/sections/ApartmentList.vue'
+import ApartmentList from '../components/forms/elements/ApartmentList.vue'
 import DetailsSearch from '../components/forms/DetailsSearch.vue'
 
 export default {
