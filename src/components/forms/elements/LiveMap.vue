@@ -46,8 +46,7 @@ export default {
   },
   methods: {
     async initializeMap() {
-      const APPLICATION_NAME = 'My Application';
-      const APPLICATION_VERSION = '1.0';
+;
 
       let position = [41.9028, 12.4964]; // Coordinata di Roma come posizione predefinita
 
