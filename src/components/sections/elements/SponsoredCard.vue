@@ -4,10 +4,14 @@
       <img class="card-img-top rounded-top p-2" :src="apartment.image" alt="Card image cap">
       <div class="card-body d-flex flex-column justify-content-between">
         <h5 class="card-title">{{ apartment.title }}</h5>
-        <p class="card-text" style="margin-bottom: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">{{ apartment.description }}</p>
+        <p class="card-text"
+          style="margin-bottom: 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden">
+          {{ apartment.description }}</p>
         <div class="card-footer mt-4">
           <p class="card-text">{{ apartment.price }} € / notte</p>
-          <a href="#" class="btn btn-secondary">Scopri di più</a>
+          <router-link to="/apartment/:id">
+            <a href="#" class="btn btn-secondary">Scopri di più</a>
+          </router-link>
         </div>
       </div>
     </div>
@@ -76,5 +80,4 @@ export default {
   flex-direction: column;
   justify-content: flex-end;
 }
-
 </style>
