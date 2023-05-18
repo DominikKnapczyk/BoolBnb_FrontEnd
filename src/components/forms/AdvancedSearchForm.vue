@@ -2,7 +2,7 @@
   <div class="container my-5">
     <div class="row">
       <div class="col-6">
-      <form class="mt-4" @submit.prevent>
+      <form class="mt-4" @submit.prevent @submit="submitForm">
         <div class="form-group">
 
           <label>Posizione selezionata:</label>
@@ -39,15 +39,16 @@
           <input type="number" class="form-control" v-model="raggio" />
         </div>
 
-          <!-- <button @click="ricerca">CERCA</button> -->
+
       </form>
       </div>
       <div class="col-6">
-<LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" />
-
-
-
+        <LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" />
       </div>
+
+      
+        <AppartamentList :localita="localita" :raggio="raggio" />
+     
   </div>
 
   </div>
@@ -60,10 +61,12 @@ import SuggestionMixin from '../../mixins/SuggestionMixin.js';
 import { getAppartamenti } from '../../mixins/api.js';
 import router from '../../router';
 import LiveMap from './elements/LiveMap.vue';
+import AppartamentList from './elements/ApartmentList.vue';
 
 export default {
   components: {
     LiveMap,
+    AppartamentList,
   },
 
   mixins: [TomTomMixin, SuggestionMixin],
@@ -92,8 +95,6 @@ export default {
 
 
   methods: {
-
-
   async updateMap() {
   const response = await this.searchLocation();
   const coordinate = response.coordinate;
@@ -111,54 +112,6 @@ export default {
   }
 },
 
-calculateZoom(raggio) {
-    // Definisci i valori di raggio e corrispondenti zoom
-    const zoomValues = [
-      { raggioMax: 1, zoom: 15 },
-      { raggioMax: 5, zoom: 14 },
-      { raggioMax: 10, zoom: 13 },
-      { raggioMax: 20, zoom: 12 },
-      { raggioMax: 50, zoom: 11 },
-      { raggioMax: 100, zoom: 10 },
-      { raggioMax: 200, zoom: 9 },
-      { raggioMax: 500, zoom: 8 },
-      { raggioMax: 1000, zoom: 7 },
-      { raggioMax: 2000, zoom: 6 },
-      { raggioMax: 5000, zoom: 5 },
-      { raggioMax: 10000, zoom: 4 },
-      { raggioMax: 20000, zoom: 3 },
-      { raggioMax: 50000, zoom: 2 },
-      { raggioMax: 100000, zoom: 1 },
-      { raggioMax: 200000, zoom: 0 },
-      // Aggiungi altri valori di raggio e zoom se necessario
-    ];
-
-    // Trova il valore di zoom corrispondente al raggio
-    let zoom = 12; // Imposta uno zoom di default
-    for (const value of zoomValues) {
-      if (raggio <= value.raggioMax) {
-        zoom = value.zoom;
-        break;
-      }
-    }
-
-    return zoom;
-  },
-
-
-    async ricerca() {
-      const response = await this.searchLocation();
-      const coordinate = response.coordinate;
-      const raggio = this.raggio;
-
-      if (coordinate) {
-        const appartamenti = await getAppartamenti(coordinate, raggio);
-
-        if (appartamenti !== null) {
-          // GENERA LE CARD SE IL BACKEND RESTITUISCE UN ARRAY DI APPARTAMENTI
-        }
-      }
-    },
   },
 };
 </script>
