@@ -37,15 +37,11 @@ export default {
       .get(`http://localhost:8000/api/apartments/${apartmentId}`)
       .then((response) => {
         this.apartment = response.data;
+        console.log(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
-    /*.get(`http://localhost:8000/api/apartments/15`)
-    .then((response) => {
-      this.apartment = response.data[0];
-      console.log(this.apartment);
-    })*/
   },
 };
 </script>
@@ -65,11 +61,7 @@ export default {
           notte
         </div>
       </div>
-      <img
-        class="card-img-top rounded-top w-100 p-5"
-        :src="apartment.image"
-        alt=""
-      />
+      <img class="card-img-top rounded-top w-100 p-5" :src="apartment.image" alt="" />
       <div class="card-body pb-4">
         <h5>Descrizione:</h5>
         <p>
@@ -86,11 +78,16 @@ export default {
         </ul>
         <hr />
         <h5>Servizzi aggiuntivi:</h5>
-        <i
-          v-for="service in apartment.services"
-          :class="'me-3 text-dark bi ' + service.icon"
-          :title="service.title"
-        ></i>
+        <!--<i v-for="service in apartment.services" :class="'me-3 text-dark bi ' + service.icon" :title="service.title"></i>-->
+        <div class="card p-2" v-if="apartment.services.length">
+          <p class="m-0" v-for="service in apartment.services" :key="service.id">
+            <i :class="'me-2 bg-secondary rounded text-light p-1 bi ' + service.icon" :title="service.title"></i>
+            {{ service.title }}
+          </p>
+        </div>
+        <div v-else>
+          <p>Nessun servizio aggiuntivo.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -99,6 +96,5 @@ export default {
 </template>
 
 <style scoped>
-footer {
-}
+footer {}
 </style>
