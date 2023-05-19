@@ -3,18 +3,22 @@ import NavBar from '../components/sections/NavBar.vue';
 import Footer from '../components/sections/Footer.vue';
 import axios from 'axios';
 //import SponsoredCard from '../components/sections/elements/SponsoredCard.vue';
-//import Card from './elements/SponsoredCard.vue';
+import SponsoredCard from '../components/sections/elements/SponsoredCard.vue';
 //import data from '../../data.json';
 
 export default {
   name: 'ApartmentDetailPage',
 
-  props: {
-    apartment: Object,
-  },
+  /*props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },*/
+
   data() {
     return {
-      apartment: []
+      apartment: [],
     }
   },
 
@@ -22,16 +26,28 @@ export default {
     NavBar,
     Footer,
     //Card,
-    //SponsoredCard,
+    SponsoredCard,
   },
 
   created() {
+    const apartmentId = this.$route.params.id;
+    console.log(apartmentId);
+
     axios
-      .get(`http://localhost:8000/api/apartments/15`)
-      .then((response) => {
-        this.apartment = response.data[0];
-        console.log(this.apartment);
+      .get(`http://localhost:8000/api/apartments/${apartmentId}`)
+      .then(response => {
+        let appartamento = response.data;
+        this.apartment = appartamento[0];
+        console.log(appartamento);
       })
+      .catch(error => {
+        console.error(error);
+      });
+    /*.get(`http://localhost:8000/api/apartments/15`)
+    .then((response) => {
+      this.apartment = response.data[0];
+      console.log(this.apartment);
+    })*/
   },
 }
 </script>

@@ -43,12 +43,12 @@
         </p>
       </div>
 
-      <div class="card-footer mt-4">
-        <p class="card-text text-center">
+      <div class="card-footer text-center mt-4">
+        <p class="card-text">
           <span class="price">€ {{ apartment.price }}</span> / notte
         </p>
-        <router-link to="/apartment/${id}">
-          <a href="#" class="btn btn-secondary">Scopri di più</a>
+        <router-link :to="'/apartment/' + apartment.id">
+          <span class="btn btn-secondary">Scopri di più</span>
         </router-link>
       </div>
     </div>
