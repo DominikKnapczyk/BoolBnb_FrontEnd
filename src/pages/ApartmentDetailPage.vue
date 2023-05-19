@@ -51,7 +51,7 @@ export default {
 
   <div class="card-container my-5">
     <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-end">
+      <div class="card-header d-flex justify-content-between align-items-end bg-danger bg-opacity-10">
         <div>
           <h4 class="card-title">{{ apartment.title }}</h4>
           <p class="fw-semibold mt-3">Indirizzo: {{ apartment.address }}</p>
@@ -62,7 +62,7 @@ export default {
         </div>
       </div>
       <img class="card-img-top rounded-top w-100 p-5" :src="apartment.image" alt="" />
-      <div class="card-body pb-4">
+      <div class="card-body pt-0 pb-4">
         <h5>Descrizione:</h5>
         <p>
           {{ apartment.description }}
@@ -81,7 +81,7 @@ export default {
         <!--<i v-for="service in apartment.services" :class="'me-3 text-dark bi ' + service.icon" :title="service.title"></i>-->
         <div class="card p-2" v-if="apartment.services.length">
           <p class="m-0" v-for="service in apartment.services" :key="service.id">
-            <i :class="'me-2 bg-secondary rounded text-light p-1 bi ' + service.icon" :title="service.title"></i>
+            <i :class="'bg-secondary rounded text-light me-2 p-1 bi ' + service.icon" :title="service.title"></i>
             {{ service.title }}
           </p>
         </div>
