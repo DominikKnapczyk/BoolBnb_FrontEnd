@@ -39,8 +39,9 @@
         <LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" />
       </div>
 
-
-      <AppartamentList :localita="localita" :raggio="raggio" />
+      <div class="container">
+      <AppartamentList :filters="filters" :localita="localita" :raggio="raggio" />
+      </div>
 
     </div>
 
@@ -70,6 +71,30 @@ export default {
       raggio: '',
       coordinate_localita: '',
       autocompilato: false,
+      filters: {
+        roomsNum: '',
+        singleBeds: '',
+        doubleBeds: '',
+        listServices: [],
+      },
+      services: [
+        { id: 1, name: 'Wi-Fi' },
+        { id: 2, name: 'Piscina' },
+        { id: 3, name: 'Posto auto' },
+        { id: 4, name: 'Aria condizionata' },
+        { id: 5, name: 'Terrazza panoramica' },
+        { id: 6, name: 'Servizio di pulizia' },
+        { id: 7, name: 'TV via cavo/satellite' },
+        { id: 8, name: 'Servizio lavanderia' },
+        { id: 9, name: 'Navetta aeroportuale' },
+        { id: 10, name: 'Area barbecue' },
+        { id: 11, name: 'Noleggio bici' },
+        { id: 12, name: 'Self check-in' },
+        { id: 13, name: 'Colazione inclusa' },
+        { id: 14, name: 'Sauna' },
+        { id: 15, name: 'Vista mare' },
+        { id: 16, name: 'Portineria' },
+      ],
     };
   },
 
@@ -104,6 +129,7 @@ export default {
         mapComponent.updateZoom(zoom);
       }
     },
+
 
   },
 };
@@ -190,5 +216,14 @@ input:focus {
   /* Aggiungi un'altezza appropriata alla mappa */
   width: 100%;
   /* Assicurati che la mappa si estenda completamente all'interno del contenitore */
+}
+
+#filters {
+  max-width: 15rem;
+}
+
+.numType {
+  max-width: 5rem;
+  margin-top: 0.3rem;
 }
 </style>
