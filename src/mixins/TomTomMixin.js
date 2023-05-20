@@ -6,7 +6,7 @@ export default {
       try {
         const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
           params: {
-            key: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
+            key: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
             limit: 5,
           },
         });
