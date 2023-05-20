@@ -19,17 +19,21 @@ export default {
   data() {
     return {
       API_KEY: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
-      map: null, // Riferimento all'oggetto mappa
+      map: null,
     };
   },
   mounted() {
-    this.initializeMap();
+    this.initializeMap().then(() => {
+      setTimeout(() => {
+        this.updateCircle(this.raggio);
+      }, 1000);
+    });
   },
   watch: {
     localita: {
       handler(newLocalita) {
         if (this.map) {
-          this.updateMap(newLocalita);
+          this.searchLocation(newLocalita);
         }
       },
       immediate: true,
@@ -38,20 +42,19 @@ export default {
       handler(newRaggio) {
         if (this.map) {
           const zoom = this.calculateZoom(newRaggio);
-          this.map.setZoom(zoom); // Aggiorna lo zoom della mappa
+          this.map.setZoom(zoom);
+          this.updateCircle(newRaggio);
         }
       },
       immediate: true,
     },
   },
   methods: {
+    // Inizializza la mappa
     async initializeMap() {
-;
-
       let position = [41.9028, 12.4964]; // Coordinata di Roma come posizione predefinita
 
       if (this.localita) {
-        // Cerca la posizione basata sull'input
         const searchResponse = await tt.services.fuzzySearch({
           key: this.API_KEY,
           query: this.localita,
@@ -62,40 +65,44 @@ export default {
         }
       }
 
-      this.map = tt.map({
-        key: this.API_KEY,
-        container: 'map-div',
-        center: position,
-        zoom: this.calculateZoom(this.raggio),
+      return new Promise((resolve) => {
+        this.map = tt.map({
+          key: this.API_KEY,
+          container: 'map-div',
+          center: position,
+          zoom: this.calculateZoom(this.raggio),
+          interactive: false, // Aggiungi questa linea per rendere la mappa non interattiva
+        });
+
+        this.map.addControl(new tt.NavigationControl());
+
+        this.map.on('load', () => {
+          this.updateCircle(this.raggio);
+          resolve();
+        });
       });
-
-      this.map.addControl(new tt.NavigationControl());
     },
-
+    
+    // Calcola lo zoom in base al raggio
     calculateZoom(raggio) {
-      // Definisci i valori di raggio e corrispondenti zoom
       const zoomValues = [
-        { raggioMax: 1, zoom: 15 },
-        { raggioMax: 5, zoom: 14 },
-        { raggioMax: 10, zoom: 13 },
-        { raggioMax: 20, zoom: 12 },
-        { raggioMax: 50, zoom: 11 },
-        { raggioMax: 100, zoom: 10 },
-        { raggioMax: 200, zoom: 9 },
-        { raggioMax: 500, zoom: 8 },
-        { raggioMax: 1000, zoom: 7 },
+        { raggioMax: 1, zoom: 13 },
+        { raggioMax: 2, zoom: 12 },
+        { raggioMax: 4, zoom: 11 },
+        { raggioMax: 8, zoom: 10 },
+        { raggioMax: 16, zoom: 9 },
+        { raggioMax: 33, zoom: 8 },
+        { raggioMax: 66, zoom: 7 },
+        { raggioMax: 130, zoom: 6 },
+        { raggioMax: 260, zoom: 5 },
+        { raggioMax: 500, zoom: 4 },
+        { raggioMax: 1000, zoom: 3 },
         { raggioMax: 2000, zoom: 6 },
         { raggioMax: 5000, zoom: 5 },
         { raggioMax: 10000, zoom: 4 },
-        { raggioMax: 20000, zoom: 3 },
-        { raggioMax: 50000, zoom: 2 },
-        { raggioMax: 100000, zoom: 1 },
-        { raggioMax: 200000, zoom: 0 },
-        // Aggiungi altri valori di raggio e zoom se necessario
       ];
 
-      // Trova il valore di zoom corrispondente al raggio
-      let zoom = 12; // Zoom di default
+      let zoom = 12;
 
       for (let i = 0; i < zoomValues.length; i++) {
         if (raggio <= zoomValues[i].raggioMax) {
@@ -106,26 +113,84 @@ export default {
 
       return zoom;
     },
+    
+    // Cerca la posizione specificata
+    searchLocation(localita) {
+      const query = localita || '';
 
-    updateMap(localita) {
-      const position = [41.9028, 12.4964]; // Coordinata di Roma come posizione predefinita
-
-      if (localita) {
-        // Cerca la posizione basata sull'input
-        tt.services
-          .fuzzySearch({
-            key: this.API_KEY,
-            query: localita,
-          })
-          .then((searchResponse) => {
-            if (searchResponse.results && searchResponse.results.length > 0) {
-              const newPosition = searchResponse.results[0].position;
-              this.map.setCenter(newPosition); // Imposta il nuovo centro della mappa
-            }
-          });
-      } else {
-        this.map.setCenter(position); // Imposta la posizione di default
+      tt.services
+        .fuzzySearch({
+          key: this.API_KEY,
+          query: query,
+        })
+        .then((searchResponse) => {
+          if (searchResponse.results && searchResponse.results.length > 0) {
+            const newPosition = searchResponse.results[0].position;
+            this.updateMap(newPosition);
+          }
+        });
+    },
+    
+    // Aggiorna la mappa con una nuova posizione
+    updateMap(newPosition) {
+      if (newPosition) {
+        this.map.setCenter(newPosition);
+        this.updateCircle(this.raggio);
       }
+    },
+    
+    // Aggiorna il cerchio sulla mappa
+    updateCircle(raggio) {
+      if (!this.map.isStyleLoaded()) {
+        return;
+      }
+
+      const center = this.map.getCenter();
+
+      const polygonCoordinates = [];
+      const numPoints = 250;
+      const angleDelta = (Math.PI * 2) / numPoints;
+      for (let i = 0; i < numPoints; i++) {
+        const angle = i * angleDelta;
+        const x =
+          center.lng +
+          (raggio / 111) *
+            Math.cos(angle) /
+            Math.cos(center.lat * (Math.PI / 180));
+        const y = center.lat + (raggio / 111) * Math.sin(angle);
+        polygonCoordinates.push([x, y]);
+      }
+
+      if (this.map.getLayer('circle')) {
+        this.map.removeLayer('circle');
+      }
+
+      if (this.map.getSource('circle-source')) {
+        this.map.removeSource('circle-source');
+      }
+
+      this.map.addSource('circle-source', {
+        type: 'geojson',
+        data: {
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [polygonCoordinates],
+          },
+        },
+      });
+
+      this.map.addLayer({
+        id: 'circle',
+        type: 'fill',
+        source: 'circle-source',
+        layout: {},
+        paint: {
+          'fill-color': '#db356c',
+          'fill-opacity': 0.3,
+          'fill-outline-color': '#dc3555',
+        },
+      });
     },
   },
 };
@@ -136,5 +201,9 @@ export default {
   width: 100%;
   height: 300px;
   background-color: antiquewhite;
+}
+
+.mapboxgl-ctrl-top-right {
+  display: none !important;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="container my-5">
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-6">
         <form class="mt-4" @submit.prevent @submit="submitForm">
           <div class="form-group">
 
@@ -35,7 +35,7 @@
 
         </form>
       </div>
-      <div class="col-6">
+      <div class="col-md-6 col-sm-12 d-none d-sm-block">
         <LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" />
       </div>
 
@@ -140,8 +140,6 @@ button {
   background-color: rgba($color: #000000, $alpha: 0.6);
   color: white;
   height: 60px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
 }
 
 input {
