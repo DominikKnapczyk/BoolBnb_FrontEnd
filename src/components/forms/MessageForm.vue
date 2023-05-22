@@ -1,4 +1,5 @@
 <script>
+import axios from 'axios';
 
 export default {
   components: {
@@ -7,10 +8,10 @@ export default {
   data() {
     return {
       email: null,
-      message: null,
       name: null,
-      // apartment id??
-      apiMessageURL: 'http://localhost:8000/api/messages/'
+      message: null,
+      apiMessageURL: 'http://127.0.0.1:8000/api/messages/',
+      messageSent: false,
     }
   },
 
@@ -20,17 +21,12 @@ export default {
 
   methods: {
     sendMessage() {
-      axios.post(this.apiMessageURL, {
-        email: this.email,
-        message: this.message,
-        name: this.name
-        // apartment_id: {{ apartmentId }}??
-      }, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      )
+      axios.post(this.apiMessageURL,
+        { email: this.email, name: this.name, text: this.message, apartment_id: this.apartmentId })
+        .then(response => {
+          // Handle the response from the server
+          this.messageSent = true;
+        })
     }
   }
 }
@@ -41,7 +37,7 @@ export default {
     <div class="card-header">Invia un messaggio al proprietario.</div>
 
     <div class="card-body">
-      <form action="">
+      <form @submit.prevent="sendMessage">
         <div>
           <label for="email" class="mb-2">Inserisci la tua email</label>
           <!-- value="todo: email utente loggato" -->
@@ -56,7 +52,8 @@ export default {
           <label for="message" class="mb-2">Inserisci il messaggio per il proprietario</label>
           <input id="message" type="text" class="form-control" name="message" required v-model="message">
         </div>
-        <input type="submit" value="Invia" class="btn btn-success mt-2" @click="sendMessage">
+        <input type="submit" value="Invia" class="btn btn-success mt-2">
+        <span v-if="messageSent" class="m-4">Messaggio inviato correttamente!</span>
       </form>
     </div>
   </div>

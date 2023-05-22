@@ -39,13 +39,23 @@ export default {
       .get(`http://localhost:8000/api/apartments/${apartmentId}`)
       .then((response) => {
         this.apartment = response.data;
-        console.log(response.data);
       })
       .catch((error) => {
         console.error(error);
       });
   },
 };
+</script>
+
+<script>
+import MessageForm from '../components/forms/MessageForm.vue'
+
+export default {
+  name: 'apartmentDetails',
+  components: {
+    MessageForm
+  },
+}
 </script>
 
 <template>
@@ -95,7 +105,7 @@ export default {
         </div>
 
         <div class="my-2">
-          <MessageForm />
+          <MessageForm :apartmentId="apartment.id" />
         </div>
       </div>
     </div>
