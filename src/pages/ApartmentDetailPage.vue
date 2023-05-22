@@ -53,7 +53,7 @@ export default {
 
   <div class="card-container my-5">
     <router-link :to="'/advanced-search'">
-      <button class="btn btn-outline-primary mb-3">Torna alla ricerca</button>
+      <button class="btn btn-outline-secondary mb-3">Torna alla ricerca</button>
     </router-link>
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-end bg-danger bg-opacity-10">
