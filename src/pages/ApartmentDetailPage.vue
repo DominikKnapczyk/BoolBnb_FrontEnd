@@ -3,12 +3,13 @@ import NavBar from "../components/sections/NavBar.vue";
 import MessageForm from '../components/forms/MessageForm.vue'
 import Footer from "../components/sections/Footer.vue";
 import axios from "axios";
-//import SponsoredCard from '../components/sections/elements/SponsoredCard.vue';
 import SponsoredCard from "../components/sections/elements/SponsoredCard.vue";
+//import SponsoredCard from '../components/sections/elements/SponsoredCard.vue';
 //import data from '../../data.json';
 
 export default {
-  name: "ApartmentDetailPage",
+  //name: "ApartmentDetailPage",
+  name: 'apartmentDetails',
 
   /*props: {
     id: {
@@ -26,7 +27,6 @@ export default {
   components: {
     NavBar,
     Footer,
-    //Card,
     MessageForm,
     SponsoredCard,
   },
@@ -45,17 +45,6 @@ export default {
       });
   },
 };
-</script>
-
-<script>
-import MessageForm from '../components/forms/MessageForm.vue'
-
-export default {
-  name: 'apartmentDetails',
-  components: {
-    MessageForm
-  },
-}
 </script>
 
 <template>
