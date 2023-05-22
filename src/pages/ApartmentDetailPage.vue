@@ -48,17 +48,6 @@ export default {
 };
 </script>
 
-<script>
-import MessageForm from '../components/forms/MessageForm.vue'
-
-export default {
-  name: 'apartmentDetails',
-  components: {
-    MessageForm
-  },
-}
-</script>
-
 <template>
   <NavBar />
 
@@ -101,12 +90,13 @@ export default {
         <div v-else>
           <p>Nessun servizio aggiuntivo.</p>
         </div>
+
+        <div class="my-2">
+          <MessageForm />
+        </div>
       </div>
     </div>
   </div>
 
   <Footer />
 </template>
-
-<script>
-</script>
