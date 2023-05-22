@@ -3,11 +3,7 @@
     <div class="col-lg-3 mb-5">
       <!-- Filtro Ricerca -->
       <div class="row">
-        <div
-          id="filters"
-          class="w-100"
-          :class="{ 'd-none': !showFilters, 'd-lg-block': !showFilters }"
-        >
+        <div id="filters" class="w-100" :class="{ 'd-none': !showFilters, 'd-lg-block': !showFilters }">
           <div class="card">
             <div class="card-header">Filtri Ricerca</div>
 
@@ -18,95 +14,48 @@
                   <hr>
                   <div>
                     <label for="min_rooms_num">Numero minimo stanze</label>
-                    <input
-                      class="numType d-block"
-                      type="number"
-                      id="min_rooms_num"
-                      v-model="filters.minRoomsNum"
-                      @input="searchFilters"
-                      min="1"
-                      max="20"
-                    >
+                    <input class="numType d-block" type="number" id="min_rooms_num" v-model="filters.minRoomsNum"
+                      @input="searchFilters" min="1" max="20">
                   </div>
 
                   <div>
                     <label for="max_rooms_num">Numero massimo stanze</label>
-                    <input
-                      class="numType d-block"
-                      type="number"
-                      id="max_rooms_num"
-                      v-model="filters.maxRoomsNum"
-                      @input="searchFilters"
-                      min="1"
-                      max="20"
-                    >
+                    <input class="numType d-block" type="number" id="max_rooms_num" v-model="filters.maxRoomsNum"
+                      @input="searchFilters" min="1" max="20">
                   </div>
 
                   <hr>
 
                   <div>
                     <label for="min_beds">Numero minimo posti letto</label>
-                    <input
-                      class="numType d-block"
-                      type="number"
-                      id="min_beds"
-                      v-model="filters.minBeds"
-                      @input="searchFilters"
-                      min="1"
-                      max="20"
-                    >
+                    <input class="numType d-block" type="number" id="min_beds" v-model="filters.minBeds"
+                      @input="searchFilters" min="1" max="20">
                   </div>
                   <div>
                     <label for="max_beds">Numero massimo posti letto</label>
-                    <input
-                      class="numType d-block"
-                      type="number"
-                      id="max_beds"
-                      v-model="filters.maxBeds"
-                      @input="searchFilters"
-                      min="1"
-                      max="20"
-                    >
+                    <input class="numType d-block" type="number" id="max_beds" v-model="filters.maxBeds"
+                      @input="searchFilters" min="1" max="20">
                   </div>
                   <hr>
 
-                    <div>
-                      <label for="min_price">Prezzo minimo</label>
-                      <input
-                        class="numType d-block"
-                        type="number"
-                        id="min_price"
-                        v-model="filters.minPrice"
-                        @input="searchFilters"
-                        min="1"
-                        max="99999"
-                      >
-                    </div>
-                    <div>
-                      <label for="max_price">Prezzo massimo</label>
-                      <input
-                        class="numType d-block"
-                        type="number"
-                        id="max_price"
-                        v-model="filters.maxPrice"
-                        @input="searchFilters"
-                        min="1"
-                        max="99999"
-                      >
-                    </div>
-                    <hr>
+                  <div>
+                    <label for="min_price">Prezzo minimo</label>
+                    <input class="numType d-block" type="number" id="min_price" v-model="filters.minPrice"
+                      @input="searchFilters" min="1" max="99999">
+                  </div>
+                  <div>
+                    <label for="max_price">Prezzo massimo</label>
+                    <input class="numType d-block" type="number" id="max_price" v-model="filters.maxPrice"
+                      @input="searchFilters" min="1" max="99999">
+                  </div>
+                  <hr>
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-12">
                   <h4>Lista servizi</h4>
                   <!-- Iterazione dei servizi -->
                   <div v-for="service in services" :key="service.id">
-                    <input
-                      type="checkbox"
-                      v-model="filters.listServices"
-                      :value="service.id"
-                      :id="service.id"
-                      @input="searchFilters"
-                    >
+                    <input type="checkbox" v-model="filters.listServices" :value="service.id" :id="service.id"
+                      @input="searchFilters">
                     &nbsp;
                     <label :for="service.id">{{ service.name }}</label>
                   </div>
@@ -126,19 +75,10 @@
     <div class="col-lg-9 my">
       <div class="d-flex flex-wrap">
         <!-- Iterazione degli appartamenti filtrati -->
-        <div
-          v-for="apartment in filteredApartments"
-          :key="apartment.id"
-          class="card mb-3"
-          style="flex-basis: 100%;"
-        >
+        <div v-for="apartment in filteredApartments" :key="apartment.id" class="card mb-3" style="flex-basis: 100%;">
           <div class="row no-gutters">
             <div class="col-md-4 d-flex align-items-center justify-content-center ps-3">
-              <img
-                :src="apartment.image"
-                class="card-img p-2 h-100"
-                alt="Apartment Image"
-              >
+              <img :src="apartment.image" class="card-img p-2 h-100" alt="Apartment Image">
             </div>
             <div class="col-md-8">
               <div class="card-body">
@@ -148,7 +88,9 @@
               <div class="card-footer mt-xxl-5 pt-xxl-5">
                 <p class="card-text mb-2">{{ apartment.price }} € / notte</p>
                 <hr>
-                <a href="#" class="btn btn-secondary">Scopri di più</a>
+                <router-link :to="'/apartment/' + apartment.id">
+                  <span class="btn btn-secondary">Scopri di più</span>
+                </router-link>
               </div>
             </div>
           </div>
@@ -208,43 +150,43 @@ export default {
     };
   },
   watch: {
-  localita: {
-    handler: 'updateList',
-    immediate: true,
+    localita: {
+      handler: 'updateList',
+      immediate: true,
+    },
+    raggio: {
+      handler: 'updateList',
+      immediate: true,
+    },
+    'filters.minRoomsNum': {
+      handler: 'applyFilters',
+      immediate: true,
+    },
+    'filters.maxRoomsNum': {
+      handler: 'applyFilters',
+      immediate: true,
+    },
+    'filters.minBeds': {
+      handler: 'applyFilters',
+      immediate: true,
+    },
+    'filters.maxBeds': {
+      handler: 'applyFilters',
+      immediate: true,
+    },
+    'filters.minPrice': {
+      handler: 'applyFilters',
+      immediate: true,
+    },
+    'filters.maxPrice': {
+      handler: 'applyFilters',
+      immediate: true,
+    },
+    'filters.listServices': {
+      handler: 'applyFilters',
+      immediate: true,
+    },
   },
-  raggio: {
-    handler: 'updateList',
-    immediate: true,
-  },
-  'filters.minRoomsNum': {
-    handler: 'applyFilters',
-    immediate: true,
-  },
-  'filters.maxRoomsNum': {
-    handler: 'applyFilters',
-    immediate: true,
-  },
-  'filters.minBeds': {
-    handler: 'applyFilters',
-    immediate: true,
-  },
-  'filters.maxBeds': {
-    handler: 'applyFilters',
-    immediate: true,
-  },
-  'filters.minPrice': {
-    handler: 'applyFilters',
-    immediate: true,
-  },
-  'filters.maxPrice': {
-    handler: 'applyFilters',
-    immediate: true,
-  },
-  'filters.listServices': {
-    handler: 'applyFilters',
-    immediate: true,
-  },
-},
 
   methods: {
     async updateList() {
@@ -266,53 +208,53 @@ export default {
         console.error(error);
       }
     },
-applyFilters() {
-  this.filteredApartments = this.apartments.filter((apartment) => {
-    // Filtro per il numero di stanze
-    if (
-      (this.filters.minRoomsNum && apartment.rooms < parseInt(this.filters.minRoomsNum)) ||
-      (this.filters.maxRoomsNum && apartment.rooms > parseInt(this.filters.maxRoomsNum))
-    ) {
-      return false;
-    }
-
-    // Calcolo del numero di posti letto
-    const calculatedBeds = apartment.single_beds + apartment.double_beds * 2;
-
-    // Filtro per il numero di posti letto
-    if (
-      (this.filters.minBeds && calculatedBeds < parseInt(this.filters.minBeds)) ||
-      (this.filters.maxBeds && calculatedBeds > parseInt(this.filters.maxBeds))
-    ) {
-      return false;
-    }
-
-    // Filtro per il numero di posti letto
-    if (
-    (this.filters.minPrice && parseInt(apartment.price) < parseInt(this.filters.minPrice)) ||
-    (this.filters.maxPrice && parseInt(apartment.price) > parseInt(this.filters.maxPrice))
-    ) {
-      return false;
-    }
-
-
-    // Filtro per i servizi
-    if (this.filters.listServices.length > 0) {
-      console.log("ciao")
-      for (const serviceId of this.filters.listServices) {
-        if (!apartment.services.some(service => service.id === serviceId)) {
+    applyFilters() {
+      this.filteredApartments = this.apartments.filter((apartment) => {
+        // Filtro per il numero di stanze
+        if (
+          (this.filters.minRoomsNum && apartment.rooms < parseInt(this.filters.minRoomsNum)) ||
+          (this.filters.maxRoomsNum && apartment.rooms > parseInt(this.filters.maxRoomsNum))
+        ) {
           return false;
         }
 
-      }
-    }
-    console.log("Letto");
-    console.log(this.apartments[0].double_beds);
-    console.log(this.apartments);
-    console.log(this.filteredApartments);
-    return true;
-  });
-},
+        // Calcolo del numero di posti letto
+        const calculatedBeds = apartment.single_beds + apartment.double_beds * 2;
+
+        // Filtro per il numero di posti letto
+        if (
+          (this.filters.minBeds && calculatedBeds < parseInt(this.filters.minBeds)) ||
+          (this.filters.maxBeds && calculatedBeds > parseInt(this.filters.maxBeds))
+        ) {
+          return false;
+        }
+
+        // Filtro per il numero di posti letto
+        if (
+          (this.filters.minPrice && parseInt(apartment.price) < parseInt(this.filters.minPrice)) ||
+          (this.filters.maxPrice && parseInt(apartment.price) > parseInt(this.filters.maxPrice))
+        ) {
+          return false;
+        }
+
+
+        // Filtro per i servizi
+        if (this.filters.listServices.length > 0) {
+          console.log("ciao")
+          for (const serviceId of this.filters.listServices) {
+            if (!apartment.services.some(service => service.id === serviceId)) {
+              return false;
+            }
+
+          }
+        }
+        console.log("Letto");
+        console.log(this.apartments[0].double_beds);
+        console.log(this.apartments);
+        console.log(this.filteredApartments);
+        return true;
+      });
+    },
 
 
   },

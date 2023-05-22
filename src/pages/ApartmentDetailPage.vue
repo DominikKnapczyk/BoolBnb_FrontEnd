@@ -1,5 +1,6 @@
 <script>
 import NavBar from "../components/sections/NavBar.vue";
+import MessageForm from '../components/forms/MessageForm.vue'
 import Footer from "../components/sections/Footer.vue";
 import axios from "axios";
 //import SponsoredCard from '../components/sections/elements/SponsoredCard.vue';
@@ -26,6 +27,7 @@ export default {
     NavBar,
     Footer,
     //Card,
+    MessageForm,
     SponsoredCard,
   },
 
@@ -91,13 +93,13 @@ export default {
         <div v-else>
           <p>Nessun servizio aggiuntivo.</p>
         </div>
+
+        <div class="my-2">
+          <MessageForm />
+        </div>
       </div>
     </div>
   </div>
 
   <Footer />
 </template>
-
-<style scoped>
-footer {}
-</style>
