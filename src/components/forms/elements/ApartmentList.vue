@@ -1,6 +1,7 @@
 <template>
   <div class="row my-3">
     <div class="col-lg-3 mb-5">
+
       <!-- Filtro Ricerca -->
       <div class="row">
         <div id="filters" class="w-100" :class="{ 'd-none': !showFilters, 'd-lg-block': !showFilters }">
@@ -10,6 +11,8 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-lg-12">
+
+                  <!-- Dettagli stanze -->
                   <h4>Dettagli stanze</h4>
                   <hr>
                   <div>
@@ -51,8 +54,9 @@
                   <hr>
                 </div>
                 <div class="col-md-6 col-sm-6 col-lg-12">
+
+                  <!-- Servizi -->
                   <h4>Lista servizi</h4>
-                  <!-- Iterazione dei servizi -->
                   <div v-for="service in services" :key="service.id">
                     <input type="checkbox" v-model="filters.listServices" :value="service.id" :id="service.id"
                       @input="searchFilters">
@@ -64,6 +68,7 @@
             </div>
           </div>
         </div>
+
         <!-- Aggiunta del pulsante per mostrare/nascondere i filtri -->
         <div class="toggle-filters-btn">
           <button @click="showFilters = !showFilters" class="d-lg-none mt-2">
@@ -74,8 +79,14 @@
     </div>
     <div class="col-lg-9 my">
       <div class="d-flex flex-wrap">
-        <!-- Iterazione degli appartamenti filtrati -->
-        <div v-for="apartment in filteredApartments" :key="apartment.id" class="card mb-3" style="flex-basis: 100%;">
+
+        <!-- Appartamenti filtrati -->
+        <div
+          v-for="apartment in filteredApartments"
+          :key="apartment.id"
+          class="card mb-3"
+          style="flex-basis: 100%;"
+        >
           <div class="row no-gutters">
             <div class="col-md-4 d-flex align-items-center justify-content-center ps-3">
               <img :src="apartment.image" class="card-img p-2 h-100" alt="Apartment Image">
@@ -89,7 +100,7 @@
                 <p class="card-text mb-2">{{ apartment.price }} € / notte</p>
                 <hr>
                 <router-link :to="'/apartment/' + apartment.id">
-                  <span class="btn btn-secondary">Scopri di più</span>
+                 <span class="btn btn-secondary">Scopri di più</span>
                 </router-link>
               </div>
             </div>
@@ -103,11 +114,12 @@
 <script>
 import { getAppartamenti } from '../../../mixins/api.js';
 import TomTomMixin from '../../../mixins/TomTomMixin.js';
+import { calculateDistance, degreesToRadians } from '../../../mixins/DistanceMixin';
+
 
 export default {
   mixins: [TomTomMixin],
   props: {
-
     localita: {
       type: String,
       default: '',
@@ -117,9 +129,10 @@ export default {
       required: true,
     },
   },
+
   data() {
     return {
-      API_KEY: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
+      API_KEY: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
       apartments: [],
       filteredApartments: [],
       filters: {
@@ -128,6 +141,7 @@ export default {
         doubleBeds: '',
         listServices: [],
       },
+
       services: [
         { id: 1, name: 'Wi-Fi' },
         { id: 2, name: 'Piscina' },
@@ -146,9 +160,12 @@ export default {
         { id: 15, name: 'Vista mare' },
         { id: 16, name: 'Portineria' },
       ],
+
       showFilters: false,
+      coordinate: null,
     };
   },
+
   watch: {
     localita: {
       handler: 'updateList',
@@ -189,14 +206,15 @@ export default {
   },
 
   methods: {
+    // AGGIORNA LISTA APPARTAMENTI
     async updateList() {
       try {
-        const coordinate = await this.searchLocation(this.localita);
-        console.log('Coordinate:', coordinate);
+        this.coordinate = await this.searchLocation(this.localita);
+        console.log('Coordinate:', this.coordinate.coordinate);
         console.log('Raggio:', this.raggio);
-        if (coordinate) {
+        if (this.coordinate) {
           const response = await getAppartamenti(
-            coordinate.coordinate,
+            this.coordinate.coordinate,
             this.raggio
           );
           if (response) {
@@ -208,55 +226,80 @@ export default {
         console.error(error);
       }
     },
+
     applyFilters() {
+
+      // Validazione dei valori di input
+      const minRoomsNum = parseInt(this.filters.minRoomsNum);
+      const maxRoomsNum = parseInt(this.filters.maxRoomsNum);
+      const minBeds = parseInt(this.filters.minBeds);
+      const maxBeds = parseInt(this.filters.maxBeds);
+      const minPrice = parseInt(this.filters.minPrice);
+      const maxPrice = parseInt(this.filters.maxPrice);
+
+
+   
+      // APPLICA FILTRI APPARTAMENTI
       this.filteredApartments = this.apartments.filter((apartment) => {
         // Filtro per il numero di stanze
-        if (
-          (this.filters.minRoomsNum && apartment.rooms < parseInt(this.filters.minRoomsNum)) ||
-          (this.filters.maxRoomsNum && apartment.rooms > parseInt(this.filters.maxRoomsNum))
-        ) {
+        if (minRoomsNum && apartment.rooms < minRoomsNum) {
+          return false;
+        }
+        
+        // Filtro per il numero massimo di stanze
+        if (maxRoomsNum && apartment.rooms > maxRoomsNum) {
           return false;
         }
 
-        // Calcolo del numero di posti letto
-        const calculatedBeds = apartment.single_beds + apartment.double_beds * 2;
+
+         // Calcolo del numero di posti letto
+            const calculatedBeds = apartment.single_beds + (apartment.double_beds * 2);
+            console.log("letti");
+            console.log(calculatedBeds);
 
         // Filtro per il numero di posti letto
         if (
-          (this.filters.minBeds && calculatedBeds < parseInt(this.filters.minBeds)) ||
-          (this.filters.maxBeds && calculatedBeds > parseInt(this.filters.maxBeds))
+          (minBeds && calculatedBeds < minBeds) ||
+          (maxBeds && calculatedBeds > maxBeds)
         ) {
           return false;
         }
 
-        // Filtro per il numero di posti letto
-        if (
-          (this.filters.minPrice && parseInt(apartment.price) < parseInt(this.filters.minPrice)) ||
-          (this.filters.maxPrice && parseInt(apartment.price) > parseInt(this.filters.maxPrice))
-        ) {
+          // Filtro per il prezzo
+        if ((minPrice && parseInt(apartment.price) < minPrice) || (maxPrice && parseInt(apartment.price) > maxPrice)) {
           return false;
         }
-
 
         // Filtro per i servizi
         if (this.filters.listServices.length > 0) {
-          console.log("ciao")
           for (const serviceId of this.filters.listServices) {
-            if (!apartment.services.some(service => service.id === serviceId)) {
+            if (!apartment.services.some((service) => service.id === serviceId)) {
               return false;
             }
-
           }
         }
-        console.log("Letto");
-        console.log(this.apartments[0].double_beds);
-        console.log(this.apartments);
-        console.log(this.filteredApartments);
         return true;
       });
-    },
 
-
+      // I risultati vengono ordinati per distanza dalla latitudine/longitudine inserita
+      if (this.filteredApartments.length > 0) {
+        this.filteredApartments.sort((a, b) => {
+          const distanceA = calculateDistance(
+            this.coordinate.coordinate.lat,
+            this.coordinate.coordinate.lon,
+            a.latitude,
+            a.longitude
+          );
+          const distanceB = calculateDistance(
+            this.coordinate.coordinate.lat,
+            this.coordinate.coordinate.lon,
+            b.latitude,
+            b.longitude
+          );
+          return distanceA - distanceB;
+        });
+      }  
+    }
   },
 };
 </script>

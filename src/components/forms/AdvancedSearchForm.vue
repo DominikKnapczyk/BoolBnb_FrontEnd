@@ -4,7 +4,6 @@
       <div class="col-md-6">
         <form class="mt-4" @submit.prevent @submit="submitForm">
           <div class="form-group">
-
             <label>Posizione selezionata:</label>
             <!-- Input per la località -->
             <div class="autocomplete-wrapper">
@@ -13,7 +12,6 @@
                 @keydown.arrow-up.prevent="selezionaSuggerimentoPrecedente"
                 @keydown.arrow-down.prevent="selezionaSuggerimentoSuccessivo"
                 @keydown.enter="selezionaSuggerimentoAttuale" />
-
               <div v-if="suggerimenti.length > 0 && isInputFocused" class="autocomplete">
                 <ul class="list-group">
                   <li v-for="(suggerimento, index) in suggerimenti" :key="index" class="list-group-item"
@@ -24,27 +22,24 @@
                 </ul>
               </div>
             </div>
+            <span v-if="localita.length < 2 && localita.length !== 0" class="text-danger">Inserisci una località valida</span>
           </div>
-
           <div class="form-group my-2">
             <!-- Input per il raggio -->
             <label>Raggio (km):</label>
-            <input type="number" class="form-control" v-model="raggio" />
+            <input type="number" class="form-control" v-model="raggio" min="1" max="999" />
+            <span v-if="!isRaggioValido && raggio !== ''" class="text-danger">Il raggio deve essere compreso tra 1 e 999 km</span>
           </div>
-
-
         </form>
       </div>
       <div class="col-md-6 col-sm-12 d-none d-sm-block">
-        <LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" />
+        <LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" v-if="isRaggioValido && isLocalitaValida && localita !== ''" />
       </div>
 
       <div class="container">
-      <AppartamentList :filters="filters" :localita="localita" :raggio="raggio" />
+        <AppartamentList :filters="filters" :localita="localita" :raggio="raggio" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -77,25 +72,16 @@ export default {
         doubleBeds: '',
         listServices: [],
       },
-      services: [
-        { id: 1, name: 'Wi-Fi' },
-        { id: 2, name: 'Piscina' },
-        { id: 3, name: 'Posto auto' },
-        { id: 4, name: 'Aria condizionata' },
-        { id: 5, name: 'Terrazza panoramica' },
-        { id: 6, name: 'Servizio di pulizia' },
-        { id: 7, name: 'TV via cavo/satellite' },
-        { id: 8, name: 'Servizio lavanderia' },
-        { id: 9, name: 'Navetta aeroportuale' },
-        { id: 10, name: 'Area barbecue' },
-        { id: 11, name: 'Noleggio bici' },
-        { id: 12, name: 'Self check-in' },
-        { id: 13, name: 'Colazione inclusa' },
-        { id: 14, name: 'Sauna' },
-        { id: 15, name: 'Vista mare' },
-        { id: 16, name: 'Portineria' },
-      ],
     };
+  },
+
+  computed: {
+    isRaggioValido() {
+      return this.raggio >= 1 && this.raggio <= 999;
+    },
+    isLocalitaValida() {
+      return this.localita.length >= 2 || this.localita === '';
+    },
   },
 
   mounted() {
@@ -110,7 +96,18 @@ export default {
     }
   },
 
-
+  watch: {
+    raggio() {
+      if (this.isRaggioValido && this.isLocalitaValida) {
+        this.updateMap();
+      }
+    },
+    localita() {
+      if (this.isRaggioValido && this.isLocalitaValida) {
+        this.updateMap();
+      }
+    },
+  },
 
   methods: {
     async updateMap() {
@@ -129,11 +126,10 @@ export default {
         mapComponent.updateZoom(zoom);
       }
     },
-
-
   },
 };
 </script>
+
 
 <style lang="scss" scoped>
 button {
