@@ -15,7 +15,8 @@
     "bootstrap": "^5.2.3",
     "vue": "^3.2.47",
     "vue-iframe": "^0.0.0",
-    "vue-router": "^4.2.0"
+    "vue-router": "^4.2.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

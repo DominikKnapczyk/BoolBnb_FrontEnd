@@ -1,23 +1,21 @@
 <script>
 import NavBar from "../components/sections/NavBar.vue";
-import Jumbotron from "../components/sections/Jumbotron.vue";
-import CardGrid from "../components/sections/SponsoredCardGrid.vue";
+import LoginForm from "../components/forms/LoginForm.vue";
 import Footer from "../components/sections/Footer.vue";
 
 export default {
-  name: "Homepage",
+  name: "Login",
   components: {
     NavBar,
-    Jumbotron,
-    CardGrid,
+    LoginForm,
     Footer,
   },
+  created() {},
 };
 </script>
 
 <template>
   <NavBar class="fixed-top" />
-  <Jumbotron />
-  <CardGrid />
+  <LoginForm />
   <Footer />
 </template>
