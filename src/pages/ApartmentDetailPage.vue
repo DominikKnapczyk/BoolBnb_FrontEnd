@@ -3,12 +3,13 @@ import NavBar from "../components/sections/NavBar.vue";
 import MessageForm from '../components/forms/MessageForm.vue'
 import Footer from "../components/sections/Footer.vue";
 import axios from "axios";
-//import SponsoredCard from '../components/sections/elements/SponsoredCard.vue';
 import SponsoredCard from "../components/sections/elements/SponsoredCard.vue";
+//import SponsoredCard from '../components/sections/elements/SponsoredCard.vue';
 //import data from '../../data.json';
 
 export default {
-  name: "ApartmentDetailPage",
+  //name: "ApartmentDetailPage",
+  name: 'apartmentDetails',
 
   /*props: {
     id: {
@@ -26,7 +27,6 @@ export default {
   components: {
     NavBar,
     Footer,
-    //Card,
     MessageForm,
     SponsoredCard,
   },
@@ -47,13 +47,23 @@ export default {
 };
 </script>
 
+<script>
+import MessageForm from '../components/forms/MessageForm.vue'
+
+export default {
+  name: 'apartmentDetails',
+  components: {
+    MessageForm
+  },
+}
+</script>
 
 <template>
   <NavBar />
 
   <div class="card-container my-5">
     <router-link :to="'/advanced-search'">
-      <button class="btn btn-outline-primary mb-3">Torna alla ricerca</button>
+      <button class="btn btn-outline-secondary mb-3">Torna alla ricerca</button>
     </router-link>
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-end bg-danger bg-opacity-10">

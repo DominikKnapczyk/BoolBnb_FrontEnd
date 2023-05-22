@@ -29,12 +29,22 @@
             <router-link class="nav-link" to="/">Home</router-link>
           </li>
         </ul>
-        <ul class="navbar-nav">
+        <ul v-if="!this.$store.state.isLogged" class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" :href="backendUrl + '/login'">Login</a>
+            <router-link class="nav-link" to="/login">Login</router-link>
           </li>
           <li class="nav-item">
             <a class="nav-link" :href="backendUrl + '/register'">Register</a>
+          </li>
+        </ul>
+        <ul v-if="this.$store.state.isLogged" class="navbar-nav">
+          <li class="nav-item">
+            <small class="nav-link"
+              >Ciao, {{ this.$store.state.user.name }}</small
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" @click="logout()">Logout</a>
           </li>
         </ul>
       </div>
@@ -43,30 +53,41 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       backendUrl: "http://localhost:8000",
     };
   },
-  // methods: {
-  //   redirectToLogin() {
-  //     window.location.href = `${this.backendUrl}/login`;
-  //   },
-  //   redirectToRegister() {
-  //     window.location.href = "/register";
-  //   },
-  // },
+  methods: {
+    logout() {
+      this.$store.commit("logout");
+      this.$router.push({ name: "Login" });
+    },
+  },
+  created() {},
+  watch: {
+    "$store.state.isLogged": function (newValue, oldValue) {
+      // Quando isLogged cambia, lo validiamo di nuovo
+      if (!newValue) {
+        this.$store.state.isLogged = false;
+      } else {
+        axios
+          .get("http://localhost:8000/api/check-token", {
+            headers: {
+              Authorization: `Bearer ${this.$store.state.token}`,
+            },
+          })
+          .then((response) => {
+            if (response.request.status != 200)
+              this.$store.state.isLogged = false;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+  },
 };
-
-// LATO LARAVEL!!!
-// Aggiungere queste rotte nel file routes/web.php
-
-// Route::get('/login', function () {
-//     return view('auth.login');
-// });
-
-// Route::get('/register', function () {
-//     return view('auth.register');
-// });
 </script>

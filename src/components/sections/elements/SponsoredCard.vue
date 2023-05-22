@@ -1,22 +1,33 @@
 <template>
   <div class="card" :class="[isMobile ? 'horizontal' : 'vertical']">
     <div class="img-container position-relative">
-      <img class="card-img-top rounded-top" :src="apartment.image" alt="Card image cap" />
+      <img
+        class="card-img-top rounded-top"
+        :src="apartment.image"
+        alt="Card image cap"
+      />
       <div class="services">
-        <i v-for="service in apartment.services" :class="'me-3 text-light bi ' + service.icon" :title="service.title"></i>
+        <i
+          v-for="service in apartment.services"
+          :class="'me-3 text-light bi ' + service.icon"
+          :title="service.title"
+        ></i>
         <div class="featured">Consigliato</div>
       </div>
     </div>
 
     <div class="card-body d-flex flex-column justify-content-between">
       <h5 class="card-title">{{ apartment.title }}</h5>
-      <p class="card-text mb-1" style="
+      <p
+        class="card-text mb-1"
+        style="
           margin-bottom: 0;
           display: -webkit-box;
           -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
-        ">
+        "
+      >
         {{ apartment.description }}
       </p>
       <div class="container">
@@ -36,8 +47,9 @@
       <div class="mt-3">
         <p>
           <strong>Servizi: </strong>
-          <span v-for="(service, index) in apartment.services">{{ service.title
-          }}<span v-if="index != apartment.services.length - 1">, </span>
+          <span v-for="(service, index) in apartment.services"
+            >{{ service.title
+            }}<span v-if="index != apartment.services.length - 1">, </span>
             <span v-else>.</span>
           </span>
         </p>
@@ -66,7 +78,6 @@ export default {
   created() {
     this.isMobile = window.innerWidth <= 767;
     window.addEventListener("resize", this.handleResize);
-    console.log(this.apartment);
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
