@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div id="map-div"></div>
+    <div id="map-div"></div> <!-- Div in cui verrà visualizzata la mappa -->
   </div>
 </template>
 
@@ -16,52 +16,65 @@ export default {
       default: '',
     },
   },
+
   data() {
     return {
-      API_KEY: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
-      map: null,
+      API_KEY: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA', // Chiave API per il servizio di mappe
+      map: null, // Oggetto mappa
     };
   },
+
   mounted() {
     this.initializeMap().then(() => {
+      // Dopo che la mappa è stata inizializzata, esegue le seguenti azioni in ritardo
       setTimeout(() => {
-        this.updateCircle(this.raggio);
+        this.updateCircle(this.raggio); // Aggiorna il cerchio dopo 1 secondo
       }, 1000);
+      setTimeout(() => {
+        this.updateCircle(this.raggio); // Aggiorna il cerchio dopo 5 secondi
+      }, 5000);
     });
   },
+
   watch: {
     localita: {
       handler(newLocalita) {
+        // Osserva i cambiamenti nella proprietà 'localita'
         if (this.map) {
-          this.searchLocation(newLocalita);
+          this.searchLocation(newLocalita); // Esegue la ricerca della nuova posizione
         }
       },
-      immediate: true,
+
+      immediate: true, // Esegue immediatamente al caricamento del componente
     },
+
     raggio: {
       handler(newRaggio) {
+        // Osserva i cambiamenti nella proprietà 'raggio'
         if (this.map) {
-          const zoom = this.calculateZoom(newRaggio);
-          this.map.setZoom(zoom);
-          this.updateCircle(newRaggio);
+          const zoom = this.calculateZoom(newRaggio); // Calcola lo zoom in base al raggio
+          this.map.setZoom(zoom); // Imposta lo zoom sulla mappa
+          this.updateCircle(newRaggio); // Aggiorna il cerchio sulla mappa
         }
       },
-      immediate: true,
+      immediate: true, // Esegue immediatamente al caricamento del componente
     },
   },
+
   methods: {
     // Inizializza la mappa
     async initializeMap() {
       let position = [41.9028, 12.4964]; // Coordinata di Roma come posizione predefinita
 
       if (this.localita) {
+        // Se è specificata una località, esegue una ricerca approssimativa
         const searchResponse = await tt.services.fuzzySearch({
           key: this.API_KEY,
           query: this.localita,
         });
 
         if (searchResponse.results && searchResponse.results.length > 0) {
-          position = searchResponse.results[0].position;
+          position = searchResponse.results[0].position; // Ottiene la posizione della località trovata
         }
       }
 
@@ -70,15 +83,15 @@ export default {
           key: this.API_KEY,
           container: 'map-div',
           center: position,
-          zoom: this.calculateZoom(this.raggio),
-          interactive: false, // Aggiungi questa linea per rendere la mappa non interattiva
+          zoom: this.calculateZoom(this.raggio), // Imposta lo zoom in base al raggio
+          interactive: false, // Imposta la mappa come non interattiva
         });
 
-        this.map.addControl(new tt.NavigationControl());
+        this.map.addControl(new tt.NavigationControl()); // Aggiunge i controlli di navigazione alla mappa
 
         this.map.on('load', () => {
-          this.updateCircle(this.raggio);
-          resolve();
+          this.updateCircle(this.raggio); // Aggiorna il cerchio sulla mappa dopo che la mappa è stata caricata
+          resolve(); // Risolve la promise
         });
       });
     },
@@ -86,6 +99,8 @@ export default {
     // Calcola lo zoom in base al raggio
     calculateZoom(raggio) {
       const zoomValues = [
+        { raggioMax: 0.2, zoom: 15 },
+        { raggioMax: 0.5, zoom: 14 },
         { raggioMax: 1, zoom: 13 },
         { raggioMax: 2, zoom: 12 },
         { raggioMax: 4, zoom: 11 },
@@ -100,6 +115,7 @@ export default {
         { raggioMax: 2000, zoom: 6 },
         { raggioMax: 5000, zoom: 5 },
         { raggioMax: 10000, zoom: 4 },
+        { raggioMax: 15000, zoom: 3 },
       ];
 
       let zoom = 12;
@@ -125,8 +141,8 @@ export default {
         })
         .then((searchResponse) => {
           if (searchResponse.results && searchResponse.results.length > 0) {
-            const newPosition = searchResponse.results[0].position;
-            this.updateMap(newPosition);
+            const newPosition = searchResponse.results[0].position; // Ottiene la posizione della località trovata
+            this.updateMap(newPosition); // Aggiorna la mappa con la nuova posizione
           }
         });
     },
@@ -134,8 +150,8 @@ export default {
     // Aggiorna la mappa con una nuova posizione
     updateMap(newPosition) {
       if (newPosition) {
-        this.map.setCenter(newPosition);
-        this.updateCircle(this.raggio);
+        this.map.setCenter(newPosition); // Imposta il centro della mappa sulla nuova posizione
+        this.updateCircle(this.raggio); // Aggiorna il cerchio sulla mappa
       }
     },
     
@@ -145,28 +161,32 @@ export default {
         return;
       }
 
-      const center = this.map.getCenter();
+      const center = this.map.getCenter(); // Ottiene il centro della mappa
 
-      const polygonCoordinates = [];
-      const numPoints = 250;
-      const angleDelta = (Math.PI * 2) / numPoints;
+      const polygonCoordinates = []; // Array che conterrà le coordinate dei punti del poligono
+      const numPoints = 250; // Numero di punti da generare per il poligono
+      const angleDelta = (Math.PI * 2) / numPoints; // Angolo incrementale tra i punti del poligono
       for (let i = 0; i < numPoints; i++) {
-        const angle = i * angleDelta;
+        const angle = i * angleDelta; // Calcola l'angolo per il punto corrente
         const x =
           center.lng +
-          (raggio / 111) *
+          (raggio / 111) * // Calcola la coordinata X del punto
             Math.cos(angle) /
-            Math.cos(center.lat * (Math.PI / 180));
-        const y = center.lat + (raggio / 111) * Math.sin(angle);
-        polygonCoordinates.push([x, y]);
+            Math.cos(center.lat * (Math.PI / 180)); // Formula per calcolare la coordinata X in base alla longitudine e alla latitudine
+        const y = center.lat + (raggio / 111) * Math.sin(angle); // Calcola la coordinata Y del punto
+        polygonCoordinates.push([x, y]); // Aggiunge le coordinate del punto all'array dei punti del poligono
       }
 
+      /* 
+      Questo ciclo for genera una serie di punti sul cerchio con il centro nella posizione della mappa e il raggio specificato. Questi punti vengono quindi utilizzati per creare un poligono, dove ogni punto rappresenta un angolo sull'anello del cerchio.
+      */
+
       if (this.map.getLayer('circle')) {
-        this.map.removeLayer('circle');
+        this.map.removeLayer('circle'); // Rimuove il layer del cerchio se esiste già
       }
 
       if (this.map.getSource('circle-source')) {
-        this.map.removeSource('circle-source');
+        this.map.removeSource('circle-source'); // Rimuove la sorgente del cerchio se esiste già
       }
 
       this.map.addSource('circle-source', {
