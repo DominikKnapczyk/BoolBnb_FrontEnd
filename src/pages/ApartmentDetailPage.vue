@@ -39,7 +39,6 @@ export default {
       .get(`http://localhost:8000/api/apartments/${apartmentId}`)
       .then((response) => {
         this.apartment = response.data;
-        console.log(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -48,16 +47,6 @@ export default {
 };
 </script>
 
-<script>
-import MessageForm from '../components/forms/MessageForm.vue'
-
-export default {
-  name: 'apartmentDetails',
-  components: {
-    MessageForm
-  },
-}
-</script>
 
 <template>
   <NavBar />
@@ -101,12 +90,13 @@ export default {
         <div v-else>
           <p>Nessun servizio aggiuntivo.</p>
         </div>
+
+        <div class="my-2">
+          <MessageForm :apartmentId="apartment.id" />
+        </div>
       </div>
     </div>
   </div>
 
   <Footer />
 </template>
-
-<script>
-</script>
