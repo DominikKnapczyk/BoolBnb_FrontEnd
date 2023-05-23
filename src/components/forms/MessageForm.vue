@@ -12,6 +12,14 @@ export default {
       messageSent: false,
     };
   },
+  watch: {
+    "$store.state.isLogged"(newValue) {
+      if (newValue == true) {
+        this.email = this.$store.state.user.email;
+        this.name = this.$store.state.user.name;
+      }
+    },
+  },
 
   props: {
     apartmentId: Number,
