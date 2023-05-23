@@ -47,17 +47,6 @@ export default {
 };
 </script>
 
-<script>
-import MessageForm from '../components/forms/MessageForm.vue'
-
-export default {
-  name: 'apartmentDetails',
-  components: {
-    MessageForm
-  },
-}
-</script>
-
 <template>
   <NavBar />
 
