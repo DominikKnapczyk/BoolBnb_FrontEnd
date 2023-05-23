@@ -63,31 +63,38 @@ export default {
   methods: {
     logout() {
       this.$store.commit("logout");
+      localStorage.removeItem("token");
       this.$router.push({ name: "Login" });
     },
   },
-  created() {},
-  watch: {
-    "$store.state.isLogged": function (newValue, oldValue) {
-      // Quando isLogged cambia, lo validiamo di nuovo
-      if (!newValue) {
-        this.$store.state.isLogged = false;
-      } else {
+  created() {
+    if (!this.$store.state.token) {
+      let token = "";
+      if (localStorage.getItem("token")) {
+        token = localStorage.getItem("token");
         axios
           .get("http://localhost:8000/api/check-token", {
             headers: {
-              Authorization: `Bearer ${this.$store.state.token}`,
+              Authorization: `Bearer ${token}`,
             },
           })
           .then((response) => {
+            // console.log(response);
             if (response.request.status != 200)
               this.$store.state.isLogged = false;
+            else {
+              this.$store.commit("doLogin", {
+                token: token,
+                loggedUser: response.data.user,
+              });
+              this.$store.state.isLogged = true;
+            }
           })
           .catch((error) => {
             console.log(error);
           });
       }
-    },
+    }
   },
 };
 </script>

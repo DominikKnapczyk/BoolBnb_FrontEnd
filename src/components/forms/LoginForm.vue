@@ -26,6 +26,7 @@ export default {
                   token: response.data.token,
                   loggedUser: response.data.user,
                 });
+                localStorage.setItem("token", this.$store.state.token);
                 this.$store.state.isLogged = true;
                 this.$router.push({ name: "Home" });
               }
