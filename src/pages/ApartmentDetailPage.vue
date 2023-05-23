@@ -74,18 +74,11 @@ export default {
       <button class="btn btn-outline-secondary mb-3">Torna alla ricerca</button>
     </router-link>
     <div class="card">
-      <div
-        class="card-header d-flex justify-content-between align-items-end"
-        :class="{
-          'bg-warning bg-opacity-75': isActive,
-          'bg-secondary bg-opacity-75':
-            !isActive &&
-            apartment.plans.some((plan) => plan.title === 'Silver'),
-          'bg-danger bg-opacity-50':
-            !isActive &&
-            apartment.plans.some((plan) => plan.title === 'Bronze'),
-        }"
-      >
+      <div class="card-header d-flex justify-content-between align-items-end" :class="{
+        'gold': isActive,
+        'silver': !isActive && apartment.plans.some((plan) => plan.title === 'Silver'),
+        'bronze': !isActive && apartment.plans.some((plan) => plan.title === 'Bronze'),
+      }">
         <div>
           <h4 class="card-title">{{ apartment.title }}</h4>
           <p class="fw-semibold mt-3">Indirizzo: {{ apartment.address }}</p>
@@ -95,11 +88,7 @@ export default {
           notte
         </div>
       </div>
-      <img
-        class="card-img-top rounded-top w-100 p-5"
-        :src="apartment.image"
-        alt=""
-      />
+      <img class="card-img-top rounded-top w-100 p-5" :src="apartment.image" alt="" />
       <div class="card-body pt-0 pb-4">
         <h5>Descrizione:</h5>
         <p>
@@ -117,18 +106,9 @@ export default {
         <hr />
         <h5>Servizzi aggiuntivi:</h5>
         <!--<i v-for="service in apartment.services" :class="'me-3 text-dark bi ' + service.icon" :title="service.title"></i>-->
-        <div class="card p-2" v-if="apartment.services.length">
-          <p
-            class="m-0"
-            v-for="service in apartment.services"
-            :key="service.id"
-          >
-            <i
-              :class="
-                'bg-secondary rounded text-light me-2 p-1 bi ' + service.icon
-              "
-              :title="service.title"
-            ></i>
+        <div class="card d-flex flex-row justify-content-between text-center p-2" v-if="apartment.services.length">
+          <p class="m-0" v-for="service in apartment.services" :key="service.id">
+            <i :class="'bg-secondary rounded text-light fs-5 me-2 p-1 bi ' + service.icon" :title="service.title"></i><br>
             {{ service.title }}
           </p>
         </div>
@@ -146,8 +126,16 @@ export default {
   <Footer />
 </template>
 
-<style>
+<style scoped>
 .gold {
-  background-color: yellow;
+  background: linear-gradient(45deg, #ffd700, #e6ac00);
+}
+
+.silver {
+  background: linear-gradient(45deg, #808080, #c0c0c0);
+}
+
+.bronze {
+  background: linear-gradient(45deg, #aa591f, #cb833c);
 }
 </style>
