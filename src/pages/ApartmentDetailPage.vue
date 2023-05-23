@@ -11,16 +11,14 @@ export default {
   //name: "ApartmentDetailPage",
   name: 'apartmentDetails',
 
-  /*props: {
-    id: {
-      type: String,
-      required: true,
-    },
-  },*/
-
   data() {
     return {
       apartment: "",
+      /* Script per cambiare colore a seconda della sponsorizzazione */
+      isActive: false,
+      goldColor: "gold",
+      silverColor: "silver",
+      bronzeColor: "bronze",
     };
   },
 
@@ -39,7 +37,22 @@ export default {
       .get(`http://localhost:8000/api/apartments/${apartmentId}`)
       .then((response) => {
         this.apartment = response.data;
+        console.log(this.apartment);
+
+        /* Script per cambiare colore a seconda della sponsorizzazione */
+        const goldPlan = this.apartment.plans.find((plan) => plan.title === "Gold");
+        const silverPlan = this.apartment.plans.find((plan) => plan.title === "Silver");
+        const bronzePlan = this.apartment.plans.find((plan) => plan.title === "Bronze");
+
+        const currentDate = new Date().toISOString();
+
+        this.isActive = goldPlan && goldPlan.pivot.end_date > currentDate;
+        this.goldColor = this.isActive ? "gold-active" : "gold";
+        /*const goldPlan = this.apartment.plans.find((plan) => plan.title === "Gold");
+        const currentDate = new Date().toISOString();
+        this.isActive = goldPlan && goldPlan.pivot.end_date > currentDate;*/
       })
+
       .catch((error) => {
         console.error(error);
       });
@@ -55,7 +68,11 @@ export default {
       <button class="btn btn-outline-secondary mb-3">Torna alla ricerca</button>
     </router-link>
     <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-end bg-danger bg-opacity-10">
+      <div class="card-header d-flex justify-content-between align-items-end" :class="{
+        'bg-warning bg-opacity-75': isActive,
+        'bg-secondary bg-opacity-75': !isActive && apartment.plans.some((plan) => plan.title === 'Silver'),
+        'bg-danger bg-opacity-50': !isActive && apartment.plans.some((plan) => plan.title === 'Bronze'),
+      }">
         <div>
           <h4 class="card-title">{{ apartment.title }}</h4>
           <p class="fw-semibold mt-3">Indirizzo: {{ apartment.address }}</p>
@@ -102,3 +119,9 @@ export default {
 
   <Footer />
 </template>
+
+<style>
+.gold {
+  background-color: yellow;
+}
+</style>
