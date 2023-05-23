@@ -12,7 +12,7 @@
           :class="'me-3 text-light bi ' + service.icon"
           :title="service.title"
         ></i>
-        <div class="featured">Consigliato</div>
+        <div class="featured" :class="apartment.piano">Consigliato</div>
       </div>
     </div>
 
@@ -90,7 +90,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .card-container {
   margin-top: 20px;
 }
@@ -146,9 +146,17 @@ i {
 }
 
 .featured {
-  background-color: goldenrod;
   color: white;
   text-align: center;
   border-radius: 30px 30px 0px 0px;
+}
+.featured.gold {
+  background-color: goldenrod;
+}
+.featured.silver {
+  background-color: silver;
+}
+.featured.bronze {
+  background-color: rosybrown;
 }
 </style>

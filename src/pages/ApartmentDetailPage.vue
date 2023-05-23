@@ -1,6 +1,6 @@
 <script>
 import NavBar from "../components/sections/NavBar.vue";
-import MessageForm from '../components/forms/MessageForm.vue'
+import MessageForm from "../components/forms/MessageForm.vue";
 import Footer from "../components/sections/Footer.vue";
 import axios from "axios";
 import SponsoredCard from "../components/sections/elements/SponsoredCard.vue";
@@ -9,7 +9,7 @@ import SponsoredCard from "../components/sections/elements/SponsoredCard.vue";
 
 export default {
   //name: "ApartmentDetailPage",
-  name: 'apartmentDetails',
+  name: "apartmentDetails",
 
   data() {
     return {
@@ -40,9 +40,15 @@ export default {
         console.log(this.apartment);
 
         /* Script per cambiare colore a seconda della sponsorizzazione */
-        const goldPlan = this.apartment.plans.find((plan) => plan.title === "Gold");
-        const silverPlan = this.apartment.plans.find((plan) => plan.title === "Silver");
-        const bronzePlan = this.apartment.plans.find((plan) => plan.title === "Bronze");
+        const goldPlan = this.apartment.plans.find(
+          (plan) => plan.title === "Gold"
+        );
+        const silverPlan = this.apartment.plans.find(
+          (plan) => plan.title === "Silver"
+        );
+        const bronzePlan = this.apartment.plans.find(
+          (plan) => plan.title === "Bronze"
+        );
 
         const currentDate = new Date().toISOString();
 
@@ -60,17 +66,6 @@ export default {
 };
 </script>
 
-<script>
-import MessageForm from '../components/forms/MessageForm.vue'
-
-export default {
-  name: 'apartmentDetails',
-  components: {
-    MessageForm
-  },
-}
-</script>
-
 <template>
   <NavBar />
 
@@ -79,11 +74,18 @@ export default {
       <button class="btn btn-outline-secondary mb-3">Torna alla ricerca</button>
     </router-link>
     <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-end" :class="{
-        'bg-warning bg-opacity-75': isActive,
-        'bg-secondary bg-opacity-75': !isActive && apartment.plans.some((plan) => plan.title === 'Silver'),
-        'bg-danger bg-opacity-50': !isActive && apartment.plans.some((plan) => plan.title === 'Bronze'),
-      }">
+      <div
+        class="card-header d-flex justify-content-between align-items-end"
+        :class="{
+          'bg-warning bg-opacity-75': isActive,
+          'bg-secondary bg-opacity-75':
+            !isActive &&
+            apartment.plans.some((plan) => plan.title === 'Silver'),
+          'bg-danger bg-opacity-50':
+            !isActive &&
+            apartment.plans.some((plan) => plan.title === 'Bronze'),
+        }"
+      >
         <div>
           <h4 class="card-title">{{ apartment.title }}</h4>
           <p class="fw-semibold mt-3">Indirizzo: {{ apartment.address }}</p>
@@ -93,7 +95,11 @@ export default {
           notte
         </div>
       </div>
-      <img class="card-img-top rounded-top w-100 p-5" :src="apartment.image" alt="" />
+      <img
+        class="card-img-top rounded-top w-100 p-5"
+        :src="apartment.image"
+        alt=""
+      />
       <div class="card-body pt-0 pb-4">
         <h5>Descrizione:</h5>
         <p>
@@ -112,8 +118,17 @@ export default {
         <h5>Servizzi aggiuntivi:</h5>
         <!--<i v-for="service in apartment.services" :class="'me-3 text-dark bi ' + service.icon" :title="service.title"></i>-->
         <div class="card p-2" v-if="apartment.services.length">
-          <p class="m-0" v-for="service in apartment.services" :key="service.id">
-            <i :class="'bg-secondary rounded text-light me-2 p-1 bi ' + service.icon" :title="service.title"></i>
+          <p
+            class="m-0"
+            v-for="service in apartment.services"
+            :key="service.id"
+          >
+            <i
+              :class="
+                'bg-secondary rounded text-light me-2 p-1 bi ' + service.icon
+              "
+              :title="service.title"
+            ></i>
             {{ service.title }}
           </p>
         </div>
