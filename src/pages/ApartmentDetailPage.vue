@@ -123,7 +123,6 @@ export default {
 <style scoped>
 .gold {
   background: linear-gradient(45deg, #ffd700, #e6ac00);
-  ;
 }
 
 .silver {
