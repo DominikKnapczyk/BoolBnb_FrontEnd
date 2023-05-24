@@ -37,7 +37,7 @@
       </div>
 
       <div class="container">
-        <AppartamentList :filters="filters" :localita="localita" :raggio="raggio" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
+        <AppartamentList :filters="filters" :localita="localita" :raggio="raggio !== '' ? Number(raggio) : 0" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
       </div>
     </div>
   </div>
@@ -84,17 +84,17 @@ export default {
     },
   },
 
-  mounted() {
+    mounted() {
     const query = this.$route.query;
     if (query.raggio && query.coordinate_localita && !this.autocompilato) {
-      this.raggio = query.raggio;
+      this.raggio = Number(query.raggio); // Converto il valore in numero
       this.localita = query.coordinate_localita;
       this.autocompilato = true;
     } else {
-      // Imposta la posizione di Roma come predefinita
       this.localita = '';
     }
   },
+
 
   watch: {
     raggio() {
@@ -118,12 +118,6 @@ export default {
       if (coordinate) {
         const mapComponent = this.$refs.liveMap; // Riferimento al componente LiveMap
         mapComponent.updateMap(coordinate); // Chiamiamo il metodo `updateMap` del componente LiveMap
-
-        // Calcola lo zoom in base al raggio
-        const zoom = this.calculateZoom(raggio);
-
-        // Aggiorna lo zoom della mappa
-        mapComponent.updateZoom(zoom);
       }
     },
   },

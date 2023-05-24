@@ -133,7 +133,7 @@ export default {
 
   data() {
     return {
-      API_KEY: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
+      API_KEY: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
       apartments: [],
       filteredApartments: [],
       filters: {
@@ -211,8 +211,6 @@ export default {
     async updateList() {
       try {
         this.coordinate = await this.searchLocation(this.localita);
-        console.log('Coordinate:', this.coordinate.coordinate);
-        console.log('Raggio:', this.raggio);
         if (this.coordinate) {
           const response = await getAppartamenti(
             this.coordinate.coordinate,
@@ -221,7 +219,6 @@ export default {
           if (response) {
             this.apartments = response;
             this.applyFilters();
-            console.log(this.filteredApartments);
           }
         }
       } catch (error) {

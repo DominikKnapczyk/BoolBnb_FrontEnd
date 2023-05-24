@@ -13,6 +13,7 @@
     "@tomtom-international/web-sdk-services": "^6.23.0",
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
+    "lodash": "^4.17.21",
     "vue": "^3.2.47",
     "vue-iframe": "^0.0.0",
     "vue-router": "^4.2.0",
