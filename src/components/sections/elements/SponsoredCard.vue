@@ -12,7 +12,7 @@
           :class="'me-3 text-light bi ' + service.icon"
           :title="service.title"
         ></i>
-        <div class="featured" :class="apartment.piano">Consigliato</div>
+        <div class="featured">Consigliato</div>
       </div>
     </div>
 
@@ -149,6 +149,7 @@ i {
   color: white;
   text-align: center;
   border-radius: 30px 30px 0px 0px;
+  background-color: silver;
 }
 .featured.gold {
   background-color: goldenrod;

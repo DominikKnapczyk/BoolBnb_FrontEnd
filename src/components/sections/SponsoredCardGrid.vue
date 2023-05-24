@@ -13,42 +13,46 @@ export default {
     };
   },
   created() {
-    axios
-      .get("http://127.0.0.1:8000/api/sponsored/gold/4/random")
-      .then((response) => {
-        let apartmentsIndex = response.data;
-        apartmentsIndex.forEach((apartment) => {
-          if (apartment.plans.length > 0) {
-            apartment.piano = "gold";
-            this.apartments.push(apartment);
-          }
-        });
-        axios
-          .get("http://127.0.0.1:8000/api/sponsored/silver/4/random")
-          .then((response) => {
-            let silverIndex = response.data;
-            silverIndex.forEach((apartment) => {
-              if (apartment.plans.length > 0) {
-                apartment.piano = "silver";
-                this.apartments.push(apartment);
-              }
-            });
-          })
-          .finally(() => {
-            axios
-              .get("http://127.0.0.1:8000/api/sponsored/bronze/4/random")
-              .then((response) => {
-                let bronzeIndex = response.data;
-                bronzeIndex.forEach((apartment) => {
-                  if (apartment.plans.length > 0) {
-                    apartment.piano = "bronze";
-                    this.apartments.push(apartment);
-                  }
-                });
-              });
-          });
-      });
-    console.log(this.apartments);
+    axios.get("http://127.0.0.1:8000/api/sponsored/all").then((response) => {
+      this.apartments = response.data;
+    });
+
+    // axios
+    //   .get("http://127.0.0.1:8000/api/sponsored/gold/4/random")
+    //   .then((response) => {
+    //     let apartmentsIndex = response.data;
+    //     apartmentsIndex.forEach((apartment) => {
+    //       if (apartment.plans.length > 0) {
+    //         apartment.piano = "gold";
+    //         this.apartments.push(apartment);
+    //       }
+    //     });
+    //     axios
+    //       .get("http://127.0.0.1:8000/api/sponsored/silver/4/random")
+    //       .then((response) => {
+    //         let silverIndex = response.data;
+    //         silverIndex.forEach((apartment) => {
+    //           if (apartment.plans.length > 0) {
+    //             apartment.piano = "silver";
+    //             this.apartments.push(apartment);
+    //           }
+    //         });
+    //       })
+    //       .finally(() => {
+    //         axios
+    //           .get("http://127.0.0.1:8000/api/sponsored/bronze/4/random")
+    //           .then((response) => {
+    //             let bronzeIndex = response.data;
+    //             bronzeIndex.forEach((apartment) => {
+    //               if (apartment.plans.length > 0) {
+    //                 apartment.piano = "bronze";
+    //                 this.apartments.push(apartment);
+    //               }
+    //             });
+    //           });
+    //       });
+    //   });
+    // console.log(this.apartments);
   },
 };
 </script>
