@@ -82,11 +82,12 @@
 
         <!-- Appartamenti filtrati -->
         <div
-          v-for="apartment in filteredApartments"
-          :key="apartment.id"
-          class="card mb-3"
-          style="flex-basis: 100%;"
-        >
+            v-for="apartment in filteredApartments"
+            :key="apartment.id"
+            class="card mb-3"
+            :class="{ 'border-danger': apartment.isSponsored }"
+            style="flex-basis: 100%;"
+          >
           <div class="row no-gutters">
             <div class="col-md-4 d-flex align-items-center justify-content-center ps-3">
               <img :src="apartment.image" class="card-img p-2 h-100" alt="Apartment Image">
@@ -220,12 +221,21 @@ export default {
           if (response) {
             this.apartments = response;
             this.applyFilters();
+            console.log(this.filteredApartments);
           }
         }
       } catch (error) {
         console.error(error);
       }
     },
+
+    checkSponsorship(apartment) {
+        const currentDate = new Date();
+        return apartment.plans.some((plan) => {
+          const endDate = new Date(plan.pivot.end_date);
+          return endDate > currentDate;
+        });
+      },
 
     applyFilters() {
 
@@ -254,8 +264,6 @@ export default {
 
          // Calcolo del numero di posti letto
             const calculatedBeds = apartment.single_beds + (apartment.double_beds * 2);
-            console.log("letti");
-            console.log(calculatedBeds);
 
         // Filtro per il numero di posti letto
         if (
@@ -281,24 +289,41 @@ export default {
         return true;
       });
 
-      // I risultati vengono ordinati per distanza dalla latitudine/longitudine inserita
-      if (this.filteredApartments.length > 0) {
-        this.filteredApartments.sort((a, b) => {
-          const distanceA = calculateDistance(
-            this.coordinate.coordinate.lat,
-            this.coordinate.coordinate.lon,
-            a.latitude,
-            a.longitude
-          );
-          const distanceB = calculateDistance(
-            this.coordinate.coordinate.lat,
-            this.coordinate.coordinate.lon,
-            b.latitude,
-            b.longitude
-          );
-          return distanceA - distanceB;
-        });
-      }  
+      // Aggiorna la proprietà isSponsored per ogni appartamento
+      for (const apartment of this.filteredApartments) {
+        apartment.isSponsored = this.checkSponsorship(apartment);
+      }
+
+      // Ordina gli appartamenti per sponsorizzazione attiva e distanza
+      this.filteredApartments.sort((a, b) => {
+        // Ordina per sponsorizzazione attiva (decrescente)
+        if (a.isSponsored && !b.isSponsored) {
+          return -1;
+        } else if (!a.isSponsored && b.isSponsored) {
+          return 1;
+        }
+
+        // Ordina per distanza (seguendo il tuo codice originale)
+        const distanceA = calculateDistance(
+          this.coordinate.coordinate.lat,
+          this.coordinate.coordinate.lon,
+          a.latitude,
+          a.longitude
+        );
+        const distanceB = calculateDistance(
+          this.coordinate.coordinate.lat,
+          this.coordinate.coordinate.lon,
+          b.latitude,
+          b.longitude
+        );
+
+        // Se entrambi gli appartamenti sono sponsorizzati o non sponsorizzati, ordina per distanza
+        if (distanceA === distanceB) {
+          return 0;
+        } else {
+          return distanceA < distanceB ? -1 : 1;
+        }
+      });
     }
   },
 };
@@ -322,4 +347,10 @@ export default {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
+
+.border-red {
+  border: 1px solid red;
+  background-color: #dc3555;
+}
+
 </style>
