@@ -104,7 +104,7 @@ export default {
           <li>Letti singoli: {{ apartment.single_beds }}</li>
         </ul>
         <hr />
-        <h5>Servizzi aggiuntivi:</h5>
+        <h5>Servizi aggiuntivi:</h5>
         <!--<i v-for="service in apartment.services" :class="'me-3 text-dark bi ' + service.icon" :title="service.title"></i>-->
         <div class="card d-flex flex-row justify-content-between text-center p-2" v-if="apartment.services.length">
           <p class="m-0" v-for="service in apartment.services" :key="service.id">
@@ -137,5 +137,9 @@ export default {
 
 .bronze {
   background: linear-gradient(45deg, #aa591f, #cb833c);
+}
+
+.card-img-top {
+  max-height: 65vh;
 }
 </style>
