@@ -23,36 +23,46 @@ export default {
       if (this.localita.length > 0) {
         const currentTime = Date.now();
         const timeSinceLastCall = currentTime - this.lastCallTime;
-
+    
         // Verifica se è passato abbastanza tempo dalla chiamata precedente
-        if (timeSinceLastCall < 300) {
+        if (timeSinceLastCall < 500) {
+          if (this.timeoutId) {
+            clearTimeout(this.timeoutId);
+          }
+    
+          // Imposta un timeout per eseguire un'ultima chiamata dopo 200ms
+          this.timeoutId = setTimeout(async () => {
+            await this.makeRequest();
+            this.timeoutId = null;
+          }, 500);
           return;
         }
-
-        try {
-          const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
-            params: {
-              key: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
-              limit: 5,
-            },
-          });
-
-          this.suggerimenti = response.data.results.slice(0, 5).map(result => result.address.freeformAddress);
-          const suggerimentiArray = Object.values(this.suggerimenti);
-          console.log(suggerimentiArray);
-
-          this.lastCallTime = Date.now(); // Aggiorna il tempo dell'ultima chiamata
-
-        } catch (error) {
-          // console.error(error);
-        }
+    
+        await this.makeRequest();
       } else {
         this.suggerimenti = [];
       }
     },
-
-
-
+    
+    async makeRequest() {
+      try {
+        const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
+          params: {
+            key: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
+            limit: 5,
+          },
+        });
+    
+        this.suggerimenti = response.data.results.slice(0, 5).map(result => result.address.freeformAddress);
+        const suggerimentiArray = Object.values(this.suggerimenti);
+        console.log(suggerimentiArray);
+    
+        this.lastCallTime = Date.now(); // Aggiorna il tempo dell'ultima chiamata
+      } catch (error) {
+        // console.error(error);
+      }
+    },
+    
     selezionaSuggerimento(suggerimento) {
     this.localita = suggerimento;
     this.suggerimenti = [];

@@ -1,7 +1,7 @@
 <template>
   <div class="container my-5">
     <div class="row">
-      <div class="col-md-6">
+      <div :class="{'col-md-6': isRaggioValido && isLocalitaValida && localita !== '', 'col-12': !(isRaggioValido && isLocalitaValida && localita !== '')}">
         <form class="mt-4" @submit.prevent @submit="submitForm">
           <div class="form-group">
             <label>Posizione selezionata:</label>
@@ -32,12 +32,16 @@
           </div>
         </form>
       </div>
+      <div v-if="!isRaggioValido || !isLocalitaValida" class="text-center mt-5">
+        <h2 class="fw-bold text-danger display-8">Inserisci una località e un raggio per avviare la ricerca</h2>
+      </div>
+
       <div class="col-md-6 col-sm-12 d-none d-sm-block">
         <LiveMap ref="liveMap" :coordinate_localita="coordinate_localita" :localita="localita" :raggio="raggio" v-if="isRaggioValido && isLocalitaValida && localita !== ''" />
       </div>
 
       <div class="container">
-        <AppartamentList  :localita="localita" :raggio="raggio !== '' ? Number(raggio) : 0" :homeRedirect1="homeRedirect1" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
+        <AppartamentList  :localita="localita" :raggio="raggio !== '' ? Number(raggio) : 0" :homeRedirect1="homeRedirect1" v-if="isRaggioValido && isLocalitaValida" />
       </div>
     </div>
   </div>
@@ -80,7 +84,7 @@ export default {
       return this.raggio >= 1 && this.raggio <= 999;
     },
     isLocalitaValida() {
-      return this.localita.length >= 2 || this.localita === '';
+      return this.localita.length >= 2;
     },
   },
 
@@ -132,11 +136,9 @@ export default {
 
       // Se si viene reindirizzati dalla Home il Local Storage viene resettato
       if (this.homeRedirect == 'true') {
-        console.log("cccccc");
         localStorage.clear();
         this.homeRedirect = 'false';
         this.homeRedirect1 = true;
-        console.log(this.homeRedirect1);
 
       } else {
 

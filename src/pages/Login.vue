@@ -17,5 +17,5 @@ export default {
 <template>
   <NavBar class="fixed-top" />
   <LoginForm />
-  <Footer class="fixed-top"/>
+  <Footer />
 </template>

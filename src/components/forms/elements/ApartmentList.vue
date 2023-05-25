@@ -11,48 +11,50 @@
             <div class="card-body">
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-lg-12">
-
                   <!-- Dettagli stanze -->
                   <h4>Dettagli stanze</h4>
                   <hr>
-                  <div>
-                    <label for="min_rooms_num">Numero minimo stanze</label>
-                    <input class="numType d-block" type="number" id="min_rooms_num" v-model="filters.minRoomsNum"
-                      @input="searchFilters" min="1" max="20">
-                  </div>
 
-                  <div>
-                    <label for="max_rooms_num">Numero massimo stanze</label>
-                    <input class="numType d-block" type="number" id="max_rooms_num" v-model="filters.maxRoomsNum"
-                      @input="searchFilters" min="1" max="20">
+                  <div class="row">
+                    <div class="col-md-6 col-lg-12">
+                      <label for="min_rooms_num">Numero minimo stanze</label>
+                      <input class="form-control" type="number" id="min_rooms_num" v-model="filters.minRoomsNum" @input="searchFilters" min="1" max="20">
+                    </div>
+                    <div class="col-md-6 col-lg-12">
+                      <label for="max_rooms_num">Numero massimo stanze</label>
+                      <input class="form-control" type="number" id="max_rooms_num" v-model="filters.maxRoomsNum" @input="searchFilters" min="1" max="20">
+                    </div>
                   </div>
 
                   <hr>
 
-                  <div>
-                    <label for="min_beds">Numero minimo posti letto</label>
-                    <input class="numType d-block" type="number" id="min_beds" v-model="filters.minBeds"
-                      @input="searchFilters" min="1" max="20">
+                  <div class="row"> 
+                    <div class="col-md-6 col-lg-12">
+                      <label for="min_beds">Numero minimo posti letto</label>
+                      <input class="form-control" type="number" id="min_beds" v-model="filters.minBeds" @input="searchFilters" min="1" max="20">
+                    </div>
+                    <div class="col-md-6 col-lg-12">
+                      <label for="max_beds">Numero massimo posti letto</label>
+                      <input class="form-control" type="number" id="max_beds" v-model="filters.maxBeds" @input="searchFilters" min="1" max="20">
+                    </div>
                   </div>
-                  <div>
-                    <label for="max_beds">Numero massimo posti letto</label>
-                    <input class="numType d-block" type="number" id="max_beds" v-model="filters.maxBeds"
-                      @input="searchFilters" min="1" max="20">
-                  </div>
+
                   <hr>
 
-                  <div>
-                    <label for="min_price">Prezzo minimo</label>
-                    <input class="numType d-block" type="number" id="min_price" v-model="filters.minPrice"
-                      @input="searchFilters" min="1" max="99999">
+                  <div class="row">
+                    <div class="col-md-6 col-lg-12">
+                      <label for="min_price">Prezzo minimo</label>
+                      <input class="form-control" type="number" id="min_price" v-model="filters.minPrice" @input="searchFilters" min="1" max="99999">
+                    </div>
+                    <div class="col-md-6 col-lg-12">
+                      <label for="max_price">Prezzo massimo</label>
+                      <input class="form-control" type="number" id="max_price" v-model="filters.maxPrice" @input="searchFilters" min="1" max="99999">
+                    </div>
                   </div>
-                  <div>
-                    <label for="max_price">Prezzo massimo</label>
-                    <input class="numType d-block" type="number" id="max_price" v-model="filters.maxPrice"
-                      @input="searchFilters" min="1" max="99999">
-                  </div>
+
                   <hr>
                 </div>
+
                 <div class="col-md-6 col-sm-6 col-lg-12">
 
                   <!-- Servizi -->
@@ -172,11 +174,8 @@ export default {
   },
 
   mounted() {
-    console.log(this.homeRedirect1);
     setTimeout(() => {
-      console.log(this.homeRedirect1);
       if (this.homeRedirect1 == true) {
-        console.log(this.homeRedirect1);
         localStorage.clear();
         this.inputReset();
       }
@@ -280,7 +279,6 @@ export default {
           if (response) {
             this.apartments = response;
             this.applyFilters();
-            console.log(this.homeRedirect1);
           }
         }
       } catch (error) {

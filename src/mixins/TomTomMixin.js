@@ -4,6 +4,7 @@ export default {
   data() {
     return {
       lastCallTime: 0, // Variabile di controllo per tenere traccia dell'ultima chiamata
+      searchTimeout: null, // Timeout per l'ultima chiamata dopo 300ms
     };
   },
   methods: {
@@ -17,9 +18,23 @@ export default {
 
       // Verifica se è passato abbastanza tempo dalla chiamata precedente
       if (timeSinceLastCall < 300) {
+        if (this.searchTimeout) {
+          // Se c'è già un timeout in sospeso, cancellalo
+          clearTimeout(this.searchTimeout);
+        }
+
+        // Imposta un nuovo timeout per l'ultima chiamata dopo 300ms
+        this.searchTimeout = setTimeout(() => {
+          this.makeLastCall();
+        }, 300);
+
         return false;
       }
 
+      // Esegue la chiamata immediatamente se il tempo trascorso è sufficiente
+      return this.makeLastCall();
+    },
+    async makeLastCall() {
       try {
         const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
           params: {
@@ -46,3 +61,4 @@ export default {
     },
   },
 };
+
