@@ -30,9 +30,6 @@ export default {
       setTimeout(() => {
         this.updateCircle(this.raggio); // Aggiorna il cerchio dopo 1 secondo
       }, 1000);
-      setTimeout(() => {
-        this.updateCircle(this.raggio); // Aggiorna il cerchio dopo 5 secondi
-      }, 5000);
     });
   },
 
@@ -150,10 +147,20 @@ export default {
     // Aggiorna la mappa con una nuova posizione
     updateMap(newPosition) {
       if (newPosition) {
+        if (!this.map || !this.map.isStyleLoaded()) {
+          // La mappa non è ancora stata caricata completamente o non esiste, riprova dopo un ritardo di 100 ms
+          setTimeout(() => {
+            this.updateMap(newPosition);
+          }, 100);
+          return;
+        }
+
         this.map.setCenter(newPosition); // Imposta il centro della mappa sulla nuova posizione
         this.updateCircle(this.raggio); // Aggiorna il cerchio sulla mappa
       }
     },
+
+
     
     // Aggiorna il cerchio sulla mappa
     updateCircle(raggio) {

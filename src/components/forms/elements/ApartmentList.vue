@@ -82,11 +82,12 @@
 
         <!-- Appartamenti filtrati -->
         <div
-          v-for="apartment in filteredApartments"
-          :key="apartment.id"
-          class="card mb-3"
-          style="flex-basis: 100%;"
-        >
+            v-for="apartment in filteredApartments"
+            :key="apartment.id"
+            class="card mb-3"
+            :class="{ 'border-danger': apartment.isSponsored }"
+            style="flex-basis: 100%;"
+          >
           <div class="row no-gutters">
             <div class="col-md-4 d-flex align-items-center justify-content-center ps-3">
               <img :src="apartment.image" class="card-img p-2 h-100" alt="Apartment Image">
@@ -128,6 +129,10 @@ export default {
       type: Number,
       required: true,
     },
+    homeRedirect1: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   data() {
@@ -166,41 +171,89 @@ export default {
     };
   },
 
+  mounted() {
+    console.log(this.homeRedirect1);
+    setTimeout(() => {
+      console.log(this.homeRedirect1);
+      if (this.homeRedirect1 == true) {
+        console.log(this.homeRedirect1);
+        localStorage.clear();
+        this.inputReset();
+      }
+    }, 100);
+  },
+
   watch: {
     localita: {
       handler: 'updateList',
       immediate: true,
     },
+
     raggio: {
       handler: 'updateList',
       immediate: true,
     },
+
     'filters.minRoomsNum': {
-      handler: 'applyFilters',
-      immediate: true,
+    handler: function(newVal) {
+      this.applyFilters();
+      // Salva il valore corrente in sessionStorage
+      sessionStorage.setItem('minRoomsNum', newVal);
     },
+    immediate: true,
+    },
+
     'filters.maxRoomsNum': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('maxRoomsNum', newVal);
+      },
       immediate: true,
     },
+
     'filters.minBeds': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('minBeds', newVal);
+      },
       immediate: true,
     },
+
     'filters.maxBeds': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('maxBeds', newVal);
+      },
       immediate: true,
     },
+
     'filters.minPrice': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('minPrice', newVal);
+      },
       immediate: true,
     },
+
     'filters.maxPrice': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('maxPrice', newVal);
+      },
       immediate: true,
     },
+
     'filters.listServices': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('listServices', JSON.stringify(newVal));
+      },
       immediate: true,
     },
   },
@@ -208,10 +261,17 @@ export default {
   methods: {
     // AGGIORNA LISTA APPARTAMENTI
     async updateList() {
+      
+      this.filters.minRoomsNum = sessionStorage.getItem('minRoomsNum') || '';
+      this.filters.maxRoomsNum = sessionStorage.getItem('maxRoomsNum') || '';
+      this.filters.minBeds = sessionStorage.getItem('minBeds') || '';
+      this.filters.maxBeds = sessionStorage.getItem('maxBeds') || '';
+      this.filters.minPrice = sessionStorage.getItem('minPrice') || '';
+      this.filters.maxPrice = sessionStorage.getItem('maxPrice') || '';
+      this.filters.listServices = JSON.parse(sessionStorage.getItem('listServices')) || [];
       try {
+        // Continua con il normale processo di ricerca
         this.coordinate = await this.searchLocation(this.localita);
-        console.log('Coordinate:', this.coordinate.coordinate);
-        console.log('Raggio:', this.raggio);
         if (this.coordinate) {
           const response = await getAppartamenti(
             this.coordinate.coordinate,
@@ -220,12 +280,22 @@ export default {
           if (response) {
             this.apartments = response;
             this.applyFilters();
+            console.log(this.homeRedirect1);
           }
         }
       } catch (error) {
         console.error(error);
       }
     },
+
+    // Verifica se l'appartamento ha una sponsorizzazione in corso
+    checkSponsorship(apartment) {
+        const currentDate = new Date();
+        return apartment.plans.some((plan) => {
+          const endDate = new Date(plan.pivot.end_date);
+          return endDate > currentDate;
+        });
+      },
 
     applyFilters() {
 
@@ -254,8 +324,6 @@ export default {
 
          // Calcolo del numero di posti letto
             const calculatedBeds = apartment.single_beds + (apartment.double_beds * 2);
-            console.log("letti");
-            console.log(calculatedBeds);
 
         // Filtro per il numero di posti letto
         if (
@@ -281,25 +349,53 @@ export default {
         return true;
       });
 
-      // I risultati vengono ordinati per distanza dalla latitudine/longitudine inserita
-      if (this.filteredApartments.length > 0) {
-        this.filteredApartments.sort((a, b) => {
-          const distanceA = calculateDistance(
-            this.coordinate.coordinate.lat,
-            this.coordinate.coordinate.lon,
-            a.latitude,
-            a.longitude
-          );
-          const distanceB = calculateDistance(
-            this.coordinate.coordinate.lat,
-            this.coordinate.coordinate.lon,
-            b.latitude,
-            b.longitude
-          );
-          return distanceA - distanceB;
-        });
-      }  
-    }
+      // Aggiorna la proprietà isSponsored per ogni appartamento
+      for (const apartment of this.filteredApartments) {
+        apartment.isSponsored = this.checkSponsorship(apartment);
+      }
+
+      // Ordina gli appartamenti per sponsorizzazione attiva e distanza
+      this.filteredApartments.sort((a, b) => {
+        // Ordina per sponsorizzazione attiva (decrescente)
+        if (a.isSponsored && !b.isSponsored) {
+          return -1;
+        } else if (!a.isSponsored && b.isSponsored) {
+          return 1;
+        }
+
+        // Ordina per distanza (seguendo il tuo codice originale)
+        const distanceA = calculateDistance(
+          this.coordinate.coordinate.lat,
+          this.coordinate.coordinate.lon,
+          a.latitude,
+          a.longitude
+        );
+        const distanceB = calculateDistance(
+          this.coordinate.coordinate.lat,
+          this.coordinate.coordinate.lon,
+          b.latitude,
+          b.longitude
+        );
+
+        // Se entrambi gli appartamenti sono sponsorizzati o non sponsorizzati, ordina per distanza
+        if (distanceA === distanceB) {
+          return 0;
+        } else {
+          return distanceA < distanceB ? -1 : 1;
+        }
+      });
+    },
+
+    // RESETTA GLI INPUT DEI FILTRI
+    inputReset() {
+      this.filters.minRoomsNum = '';
+      this.filters.maxRoomsNum = '';
+      this.filters.minBeds = '';
+      this.filters.maxBeds = '';
+      this.filters.minPrice = '';
+      this.filters.maxPrice = '';
+      this.filters.listServices = [];
+    },
   },
 };
 </script>
@@ -322,4 +418,10 @@ export default {
   padding: 0.5rem 1rem;
   cursor: pointer;
 }
+
+.border-red {
+  border: 1px solid red;
+  background-color: #dc3555;
+}
+
 </style>

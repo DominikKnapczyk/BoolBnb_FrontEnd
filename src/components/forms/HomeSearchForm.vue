@@ -48,24 +48,25 @@ export default {
   data() {
     return {
       localita: '',
+      homeRedirect: false,
     };
   },
 
   methods: {
     async ricercaHome() {
-      const coordinate = await this.searchLocation();
-      const raggio = 20;
+    const coordinate = await this.searchLocation();
+    const raggio = 20;
 
-      console.log(coordinate);
+    router.push({
+      path: '/advanced-search',
+      query: {
+        raggio: raggio,
+        coordinate_localita: coordinate.coordinate_localita,
+        homeRedirect: true,
+      },
+    });
+  },
 
-      router.push({
-        path: '/advanced-search',
-        query: {
-          raggio: raggio,
-          coordinate_localita: coordinate.coordinate_localita,
-        },
-      });
-    },
   },
 };
 </script>
@@ -149,13 +150,3 @@ input:focus {
 }
 
 </style>
-
-
-
-
-
-
-
-
-
-

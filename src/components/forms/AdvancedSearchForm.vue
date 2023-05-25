@@ -37,7 +37,7 @@
       </div>
 
       <div class="container">
-        <AppartamentList :filters="filters" :localita="localita" :raggio="raggio" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
+        <AppartamentList  :localita="localita" :raggio="raggio !== '' ? Number(raggio) : 0" :homeRedirect1="homeRedirect1" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
       </div>
     </div>
   </div>
@@ -86,15 +86,19 @@ export default {
 
   mounted() {
     const query = this.$route.query;
+
     if (query.raggio && query.coordinate_localita && !this.autocompilato) {
-      this.raggio = query.raggio;
+      this.raggio = Number(query.raggio);
       this.localita = query.coordinate_localita;
       this.autocompilato = true;
     } else {
-      // Imposta la posizione di Roma come predefinita
       this.localita = '';
     }
+
+    this.homeRedirect = query.homeRedirect; // Assign the value to homeRedirect
+    this.loadInputData();
   },
+
 
   watch: {
     raggio() {
@@ -102,6 +106,7 @@ export default {
         this.updateMap();
       }
     },
+
     localita() {
       if (this.isRaggioValido && this.isLocalitaValida) {
         this.updateMap();
@@ -118,13 +123,38 @@ export default {
       if (coordinate) {
         const mapComponent = this.$refs.liveMap; // Riferimento al componente LiveMap
         mapComponent.updateMap(coordinate); // Chiamiamo il metodo `updateMap` del componente LiveMap
+      };
 
-        // Calcola lo zoom in base al raggio
-        const zoom = this.calculateZoom(raggio);
+      this.saveInputData();
+    },
 
-        // Aggiorna lo zoom della mappa
-        mapComponent.updateZoom(zoom);
+    loadInputData() {
+
+      // Se si viene reindirizzati dalla Home il Local Storage viene resettato
+      if (this.homeRedirect == 'true') {
+        console.log("cccccc");
+        localStorage.clear();
+        this.homeRedirect = 'false';
+        this.homeRedirect1 = true;
+        console.log(this.homeRedirect1);
+
+      } else {
+
+        const localita = sessionStorage.getItem('localita');
+        const raggio = sessionStorage.getItem('raggio');
+        if (localita) {
+          this.localita = localita;
+        }
+        if (raggio) {
+          this.raggio = raggio;
+        }
       }
+
+    },
+
+    saveInputData() {
+      sessionStorage.setItem('localita', this.localita);
+      sessionStorage.setItem('raggio', this.raggio);
     },
   },
 };

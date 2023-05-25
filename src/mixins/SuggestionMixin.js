@@ -19,21 +19,29 @@ export default {
   methods: {
 
     // AUTOCOMPLETE
-
     async autocomplete() {
       if (this.localita.length > 0) {
+        const currentTime = Date.now();
+        const timeSinceLastCall = currentTime - this.lastCallTime;
+
+        // Verifica se è passato abbastanza tempo dalla chiamata precedente
+        if (timeSinceLastCall < 300) {
+          return;
+        }
+
         try {
           const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
-          params: {
-            key: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
-            limit: 5,
-          },
-        });
+            params: {
+              key: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
+              limit: 5,
+            },
+          });
 
           this.suggerimenti = response.data.results.slice(0, 5).map(result => result.address.freeformAddress);
           const suggerimentiArray = Object.values(this.suggerimenti);
           console.log(suggerimentiArray);
 
+          this.lastCallTime = Date.now(); // Aggiorna il tempo dell'ultima chiamata
 
         } catch (error) {
           // console.error(error);
@@ -42,6 +50,7 @@ export default {
         this.suggerimenti = [];
       }
     },
+
 
 
     selezionaSuggerimento(suggerimento) {
