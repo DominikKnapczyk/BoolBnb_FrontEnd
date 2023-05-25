@@ -74,11 +74,7 @@ export default {
       <button class="btn btn-outline-secondary mb-3">Torna alla ricerca</button>
     </router-link>
     <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-end" :class="{
-        'gold': isActive,
-        'silver': !isActive && apartment.plans.some((plan) => plan.title === 'Silver'),
-        'bronze': !isActive && apartment.plans.some((plan) => plan.title === 'Bronze'),
-      }">
+      <div class="card-header d-flex justify-content-between align-items-end">
         <div>
           <h4 class="card-title">{{ apartment.title }}</h4>
           <p class="fw-semibold mt-3">Indirizzo: {{ apartment.address }}</p>
