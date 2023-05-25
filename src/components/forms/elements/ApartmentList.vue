@@ -129,11 +129,15 @@ export default {
       type: Number,
       required: true,
     },
+    homeRedirect1: {
+      type: Boolean,
+      required: true,
+    },
   },
 
   data() {
     return {
-      API_KEY: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
+      API_KEY: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
       apartments: [],
       filteredApartments: [],
       filters: {
@@ -165,6 +169,18 @@ export default {
       showFilters: false,
       coordinate: null,
     };
+  },
+
+  mounted() {
+    console.log(this.homeRedirect1);
+    setTimeout(() => {
+      console.log(this.homeRedirect1);
+      if (this.homeRedirect1 == true) {
+        console.log(this.homeRedirect1);
+        localStorage.clear();
+        this.inputReset();
+      }
+    }, 100);
   },
 
   watch: {
@@ -245,24 +261,15 @@ export default {
   methods: {
     // AGGIORNA LISTA APPARTAMENTI
     async updateList() {
+      
+      this.filters.minRoomsNum = sessionStorage.getItem('minRoomsNum') || '';
+      this.filters.maxRoomsNum = sessionStorage.getItem('maxRoomsNum') || '';
+      this.filters.minBeds = sessionStorage.getItem('minBeds') || '';
+      this.filters.maxBeds = sessionStorage.getItem('maxBeds') || '';
+      this.filters.minPrice = sessionStorage.getItem('minPrice') || '';
+      this.filters.maxPrice = sessionStorage.getItem('maxPrice') || '';
+      this.filters.listServices = JSON.parse(sessionStorage.getItem('listServices')) || [];
       try {
-
-        // Se si viene reindirizzati dalla Home il Local Storage viene resettato
-        if (this.homeRedirect == true) {
-          localStorage.clear();
-          this.homeRedirect = false;
-          return;
-        }
-
-        // Recupera gli ultimi input memorizzati
-        this.filters.minRoomsNum = sessionStorage.getItem('minRoomsNum') || '';
-        this.filters.maxRoomsNum = sessionStorage.getItem('maxRoomsNum') || '';
-        this.filters.minBeds = sessionStorage.getItem('minBeds') || '';
-        this.filters.maxBeds = sessionStorage.getItem('maxBeds') || '';
-        this.filters.minPrice = sessionStorage.getItem('minPrice') || '';
-        this.filters.maxPrice = sessionStorage.getItem('maxPrice') || '';
-        this.filters.listServices = JSON.parse(sessionStorage.getItem('listServices')) || [];
-
         // Continua con il normale processo di ricerca
         this.coordinate = await this.searchLocation(this.localita);
         if (this.coordinate) {
@@ -273,6 +280,7 @@ export default {
           if (response) {
             this.apartments = response;
             this.applyFilters();
+            console.log(this.homeRedirect1);
           }
         }
       } catch (error) {
@@ -376,7 +384,18 @@ export default {
           return distanceA < distanceB ? -1 : 1;
         }
       });
-    }
+    },
+
+    // RESETTA GLI INPUT DEI FILTRI
+    inputReset() {
+      this.filters.minRoomsNum = '';
+      this.filters.maxRoomsNum = '';
+      this.filters.minBeds = '';
+      this.filters.maxBeds = '';
+      this.filters.minPrice = '';
+      this.filters.maxPrice = '';
+      this.filters.listServices = [];
+    },
   },
 };
 </script>

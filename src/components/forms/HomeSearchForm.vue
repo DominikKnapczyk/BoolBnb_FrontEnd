@@ -57,8 +57,6 @@ export default {
     const coordinate = await this.searchLocation();
     const raggio = 20;
 
-    console.log(coordinate);
-
     router.push({
       path: '/advanced-search',
       query: {
@@ -152,13 +150,3 @@ input:focus {
 }
 
 </style>
-
-
-
-
-
-
-
-
-
-

@@ -37,7 +37,7 @@
       </div>
 
       <div class="container">
-        <AppartamentList :filters="filters" :localita="localita" :raggio="raggio !== '' ? Number(raggio) : 0" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
+        <AppartamentList  :localita="localita" :raggio="raggio !== '' ? Number(raggio) : 0" :homeRedirect1="homeRedirect1" v-if="(isRaggioValido || raggio === '') && isLocalitaValida" />
       </div>
     </div>
   </div>
@@ -88,17 +88,17 @@ export default {
     const query = this.$route.query;
 
     if (query.raggio && query.coordinate_localita && !this.autocompilato) {
-      this.raggio = Number(query.raggio); // Converto il valore in numero
+      this.raggio = Number(query.raggio);
       this.localita = query.coordinate_localita;
       this.autocompilato = true;
     } else {
       this.localita = '';
     }
 
-    this.homeRedirect = query.homeRedirect === 'true'; // Imposta homeRedirect in base al valore dei parametri di query
-
+    this.homeRedirect = query.homeRedirect; // Assign the value to homeRedirect
     this.loadInputData();
   },
+
 
   watch: {
     raggio() {
@@ -131,19 +131,23 @@ export default {
     loadInputData() {
 
       // Se si viene reindirizzati dalla Home il Local Storage viene resettato
-      if (this.homeRedirect == true) {
+      if (this.homeRedirect == 'true') {
+        console.log("cccccc");
         localStorage.clear();
-        this.homeRedirect = false;
-        return;
-      }
+        this.homeRedirect = 'false';
+        this.homeRedirect1 = true;
+        console.log(this.homeRedirect1);
 
-      const localita = sessionStorage.getItem('localita');
-      const raggio = sessionStorage.getItem('raggio');
-      if (localita) {
-        this.localita = localita;
-      }
-      if (raggio) {
-        this.raggio = raggio;
+      } else {
+
+        const localita = sessionStorage.getItem('localita');
+        const raggio = sessionStorage.getItem('raggio');
+        if (localita) {
+          this.localita = localita;
+        }
+        if (raggio) {
+          this.raggio = raggio;
+        }
       }
 
     },

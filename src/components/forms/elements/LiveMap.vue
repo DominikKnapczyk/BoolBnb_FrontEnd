@@ -19,7 +19,7 @@ export default {
 
   data() {
     return {
-      API_KEY: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO', // Chiave API per il servizio di mappe
+      API_KEY: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA', // Chiave API per il servizio di mappe
       map: null, // Oggetto mappa
     };
   },
