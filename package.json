@@ -14,7 +14,10 @@
     "axios": "^1.4.0",
     "bootstrap": "^5.2.3",
     "vue": "^3.2.47",
+    "vue-carousel": "^0.18.0",
+    "vue-carousel-3d": "^1.0.1",
     "vue-iframe": "^0.0.0",
+    "vue-owl-carousel": "^2.0.3",
     "vue-router": "^4.2.0",
     "vuex": "^4.0.2"
   },
