@@ -84,8 +84,9 @@ export default {
     },
   },
 
-    mounted() {
+  mounted() {
     const query = this.$route.query;
+
     if (query.raggio && query.coordinate_localita && !this.autocompilato) {
       this.raggio = Number(query.raggio); // Converto il valore in numero
       this.localita = query.coordinate_localita;
@@ -93,8 +94,11 @@ export default {
     } else {
       this.localita = '';
     }
-  },
 
+    this.homeRedirect = query.homeRedirect === 'true'; // Imposta homeRedirect in base al valore dei parametri di query
+
+    this.loadInputData();
+  },
 
   watch: {
     raggio() {
@@ -102,6 +106,7 @@ export default {
         this.updateMap();
       }
     },
+
     localita() {
       if (this.isRaggioValido && this.isLocalitaValida) {
         this.updateMap();
@@ -118,7 +123,34 @@ export default {
       if (coordinate) {
         const mapComponent = this.$refs.liveMap; // Riferimento al componente LiveMap
         mapComponent.updateMap(coordinate); // Chiamiamo il metodo `updateMap` del componente LiveMap
+      };
+
+      this.saveInputData();
+    },
+
+    loadInputData() {
+
+      // Se si viene reindirizzati dalla Home il Local Storage viene resettato
+      if (this.homeRedirect == true) {
+        localStorage.clear();
+        this.homeRedirect = false;
+        return;
       }
+
+      const localita = sessionStorage.getItem('localita');
+      const raggio = sessionStorage.getItem('raggio');
+      if (localita) {
+        this.localita = localita;
+      }
+      if (raggio) {
+        this.raggio = raggio;
+      }
+
+    },
+
+    saveInputData() {
+      sessionStorage.setItem('localita', this.localita);
+      sessionStorage.setItem('raggio', this.raggio);
     },
   },
 };

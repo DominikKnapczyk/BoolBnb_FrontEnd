@@ -172,36 +172,72 @@ export default {
       handler: 'updateList',
       immediate: true,
     },
+
     raggio: {
       handler: 'updateList',
       immediate: true,
     },
+
     'filters.minRoomsNum': {
-      handler: 'applyFilters',
-      immediate: true,
+    handler: function(newVal) {
+      this.applyFilters();
+      // Salva il valore corrente in sessionStorage
+      sessionStorage.setItem('minRoomsNum', newVal);
     },
+    immediate: true,
+    },
+
     'filters.maxRoomsNum': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('maxRoomsNum', newVal);
+      },
       immediate: true,
     },
+
     'filters.minBeds': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('minBeds', newVal);
+      },
       immediate: true,
     },
+
     'filters.maxBeds': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('maxBeds', newVal);
+      },
       immediate: true,
     },
+
     'filters.minPrice': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('minPrice', newVal);
+      },
       immediate: true,
     },
+
     'filters.maxPrice': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('maxPrice', newVal);
+      },
       immediate: true,
     },
+
     'filters.listServices': {
-      handler: 'applyFilters',
+      handler: function(newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('listServices', JSON.stringify(newVal));
+      },
       immediate: true,
     },
   },
@@ -210,6 +246,24 @@ export default {
     // AGGIORNA LISTA APPARTAMENTI
     async updateList() {
       try {
+
+        // Se si viene reindirizzati dalla Home il Local Storage viene resettato
+        if (this.homeRedirect == true) {
+          localStorage.clear();
+          this.homeRedirect = false;
+          return;
+        }
+
+        // Recupera gli ultimi input memorizzati
+        this.filters.minRoomsNum = sessionStorage.getItem('minRoomsNum') || '';
+        this.filters.maxRoomsNum = sessionStorage.getItem('maxRoomsNum') || '';
+        this.filters.minBeds = sessionStorage.getItem('minBeds') || '';
+        this.filters.maxBeds = sessionStorage.getItem('maxBeds') || '';
+        this.filters.minPrice = sessionStorage.getItem('minPrice') || '';
+        this.filters.maxPrice = sessionStorage.getItem('maxPrice') || '';
+        this.filters.listServices = JSON.parse(sessionStorage.getItem('listServices')) || [];
+
+        // Continua con il normale processo di ricerca
         this.coordinate = await this.searchLocation(this.localita);
         if (this.coordinate) {
           const response = await getAppartamenti(
@@ -226,6 +280,7 @@ export default {
       }
     },
 
+    // Verifica se l'appartamento ha una sponsorizzazione in corso
     checkSponsorship(apartment) {
         const currentDate = new Date();
         return apartment.plans.some((plan) => {
