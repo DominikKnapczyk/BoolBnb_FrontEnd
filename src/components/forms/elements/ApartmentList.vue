@@ -80,6 +80,8 @@
       </div>
     </div>
     <div class="col-lg-9 my">
+      <h3>Apartamenti</h3> <!-- Aggiunta della scritta sopra le card -->
+      <p>Trovat{{ filteredApartments.length !== 1 ? 'i' : 'o' }} {{ filteredApartments.length }} risultat{{ filteredApartments.length !== 1 ? 'i' : 'o' }}.</p>
       <div class="d-flex flex-wrap">
 
         <!-- Appartamenti filtrati -->

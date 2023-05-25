@@ -63,6 +63,12 @@ export default {
         console.error(error);
       });
   },
+
+  methods: {
+    goBack() {
+      window.history.back();
+    }
+  },
 };
 </script>
 
@@ -70,9 +76,9 @@ export default {
   <NavBar />
 
   <div class="card-container my-5">
-    <router-link :to="'/advanced-search'">
-      <button class="btn btn-outline-secondary mb-3">Torna alla ricerca</button>
-    </router-link>
+    <!-- PULSANTE STORNA INDIETRO -->
+    <button class="btn btn-outline-secondary mb-3" @click="goBack">&larr;</button>
+   
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-end">
         <div>
