@@ -31,7 +31,18 @@ export default {
 
   created() {
     const apartmentId = this.$route.params.id;
-    console.log(apartmentId);
+
+    // Statistiche
+    axios.get("https://api.ipify.org/?format=json").then((response) => {
+      const ip_address = response.data.ip;
+      axios
+        .get(
+          `http://localhost:8000/api/view/store?apartment_id=${apartmentId}&ip_address=${ip_address}`
+        )
+        .then((response) => {
+          console.log(response);
+        });
+    });
 
     axios
       .get(`http://localhost:8000/api/apartments/${apartmentId}`)
@@ -69,16 +80,16 @@ export default {
       // Ottieni il link corrente
       var linkCorrente = window.location.href;
       // Verifica se 'advancedredirect' è incluso nel link corrente
-      var isAdvancedRedirectPresent = linkCorrente.includes('advancedredirect');
-      
+      var isAdvancedRedirectPresent = linkCorrente.includes("advancedredirect");
+
       if (isAdvancedRedirectPresent) {
-        this.$router.push('/advanced-search');
+        this.$router.push("/advanced-search");
       } else {
         window.history.back();
       }
     },
   },
-}
+};
 </script>
 
 <template>
@@ -86,8 +97,10 @@ export default {
 
   <div class="card-container my-5">
     <!-- PULSANTE STORNA INDIETRO -->
-    <button class="btn btn-outline-secondary mb-3" @click="goBack">&larr;</button>
-   
+    <button class="btn btn-outline-secondary mb-3" @click="goBack">
+      &larr;
+    </button>
+
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-end">
         <div>
@@ -99,7 +112,11 @@ export default {
           notte
         </div>
       </div>
-      <img class="card-img-top rounded-top w-100 p-5" :src="apartment.image" alt="" />
+      <img
+        class="card-img-top rounded-top w-100 p-5"
+        :src="apartment.image"
+        alt=""
+      />
       <div class="card-body pt-0 pb-4">
         <h5>Descrizione:</h5>
         <p>
@@ -117,9 +134,23 @@ export default {
         <hr />
         <h5>Servizi aggiuntivi:</h5>
         <!--<i v-for="service in apartment.services" :class="'me-3 text-dark bi ' + service.icon" :title="service.title"></i>-->
-        <div class="card d-flex flex-row justify-content-between text-center p-2" v-if="apartment.services.length">
-          <p class="m-0" v-for="service in apartment.services" :key="service.id">
-            <i :class="'bg-secondary rounded text-light fs-5 me-2 p-1 bi ' + service.icon" :title="service.title"></i><br>
+        <div
+          class="card d-flex flex-row justify-content-between text-center p-2"
+          v-if="apartment.services.length"
+        >
+          <p
+            class="m-0"
+            v-for="service in apartment.services"
+            :key="service.id"
+          >
+            <i
+              :class="
+                'bg-secondary rounded text-light fs-5 me-2 p-1 bi ' +
+                service.icon
+              "
+              :title="service.title"
+            ></i
+            ><br />
             {{ service.title }}
           </p>
         </div>
