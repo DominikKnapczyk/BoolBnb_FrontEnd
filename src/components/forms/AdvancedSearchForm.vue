@@ -70,6 +70,7 @@ export default {
       raggio: '',
       coordinate_localita: '',
       autocompilato: false,
+      timer: null, // variabile per memorizzare l'ID del timer
       filters: {
         roomsNum: '',
         singleBeds: '',
@@ -107,19 +108,21 @@ export default {
   watch: {
     raggio() {
       if (this.isRaggioValido && this.isLocalitaValida) {
-        this.updateMap();
+        this.startTimer();
       }
     },
 
     localita() {
       if (this.isRaggioValido && this.isLocalitaValida) {
-        this.updateMap();
+        this.startTimer();
       }
     },
   },
 
   methods: {
     async updateMap() {
+      await new Promise(resolve => setTimeout(resolve, 300)); // Attendi 300 ms
+
       const response = await this.searchLocation();
       const coordinate = response.coordinate;
       const raggio = this.raggio;
@@ -127,10 +130,21 @@ export default {
       if (coordinate) {
         const mapComponent = this.$refs.liveMap; // Riferimento al componente LiveMap
         mapComponent.updateMap(coordinate); // Chiamiamo il metodo `updateMap` del componente LiveMap
-      };
+      }
 
       this.saveInputData();
     },
+
+    startTimer() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+
+      this.timer = setTimeout(() => {
+        this.updateMap();
+        this.timer = null; // Resetta il timer
+      }, 400);
+   },
 
     loadInputData() {
 

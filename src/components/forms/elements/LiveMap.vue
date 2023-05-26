@@ -19,7 +19,7 @@ export default {
 
   data() {
     return {
-      API_KEY: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA', // Chiave API per il servizio di mappe
+      API_KEY: 'HDVAnH02lwrB4rN3a43S0u27wxPtLpRB', // Chiave API per il servizio di mappe
       map: null, // Oggetto mappa
     };
   },
@@ -151,7 +151,7 @@ export default {
           // La mappa non è ancora stata caricata completamente o non esiste, riprova dopo un ritardo di 100 ms
           setTimeout(() => {
             this.updateMap(newPosition);
-          }, 100);
+          }, 200);
           return;
         }
 

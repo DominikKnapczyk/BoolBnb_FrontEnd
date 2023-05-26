@@ -66,10 +66,19 @@ export default {
 
   methods: {
     goBack() {
-      window.history.back();
-    }
+      // Ottieni il link corrente
+      var linkCorrente = window.location.href;
+      // Verifica se 'advancedredirect' è incluso nel link corrente
+      var isAdvancedRedirectPresent = linkCorrente.includes('advancedredirect');
+      
+      if (isAdvancedRedirectPresent) {
+        this.$router.push('/advanced-search');
+      } else {
+        window.history.back();
+      }
+    },
   },
-};
+}
 </script>
 
 <template>
