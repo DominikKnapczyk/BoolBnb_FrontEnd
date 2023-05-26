@@ -104,7 +104,7 @@
               <div class="card-footer mt-xxl-5 pt-xxl-5">
                 <p class="card-text mb-2">{{ apartment.price }} € / notte</p>
                 <hr>
-                <router-link :to="'/apartment/' + apartment.id">
+                <router-link :to="'/apartment/' + apartment.id + '?advancedredirect'">
                  <span class="btn btn-secondary">Scopri di più</span>
                 </router-link>
               </div>
