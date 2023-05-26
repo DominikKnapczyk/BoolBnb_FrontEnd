@@ -4,7 +4,7 @@
       <img class="card-img-top rounded-top" :src="apartment.image" alt="Card image cap" />
       <div class="services">
         <i v-for="service in apartment.services" :class="'me-3 text-light bi ' + service.icon" :title="service.title"></i>
-        <div class="featured">Consigliato</div>
+
       </div>
     </div>
 

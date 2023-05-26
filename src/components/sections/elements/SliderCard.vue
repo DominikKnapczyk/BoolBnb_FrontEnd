@@ -5,7 +5,7 @@
             <div class="services">
                 <i v-for="service in apartment.services" :class="'me-3 text-light bi ' + service.icon"
                     :title="service.title"></i>
-                <div class="featured">Consigliato</div>
+                <div class="featured bg-warning bg-opacity-50">Consigliato</div>
             </div>
         </div>
         <div class="card-body d-flex flex-column justify-content-between">

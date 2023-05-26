@@ -18,7 +18,7 @@ export default {
     };
   },
   created() {
-    axios.get("http://127.0.0.1:8000/api/sponsored/all").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/standard").then((response) => {
       this.apartments = response.data;
       this.updateApartmentsPerPage(); // Aggiorniamo apartmentsPerPage all'inizio
     })
