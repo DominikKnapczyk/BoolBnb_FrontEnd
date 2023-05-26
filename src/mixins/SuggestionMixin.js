@@ -1,6 +1,5 @@
 import axios from 'axios';
 import TomTomMixin from './TomTomMixin.js';
-import { getAppartamenti } from './api.js';
 import router from '../router';
 
 export default {
@@ -17,10 +16,9 @@ export default {
   },
 
   methods: {
-
     // AUTOCOMPLETE
     async autocomplete() {
-      if (this.localita.length > 0) {
+      if (this.localita.length > 2) {
         const currentTime = Date.now();
         const timeSinceLastCall = currentTime - this.lastCallTime;
     
@@ -30,7 +28,7 @@ export default {
             clearTimeout(this.timeoutId);
           }
     
-          // Imposta un timeout per eseguire un'ultima chiamata dopo 200ms
+          // Imposta un timeout per eseguire un'ultima chiamata dopo 500ms
           this.timeoutId = setTimeout(async () => {
             await this.makeRequest();
             this.timeoutId = null;
@@ -48,7 +46,7 @@ export default {
       try {
         const response = await axios.get(`https://api.tomtom.com/search/2/geocode/${this.localita}.json`, {
           params: {
-            key: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
+            key: 'HDVAnH02lwrB4rN3a43S0u27wxPtLpRB',
             limit: 5,
           },
         });
@@ -59,7 +57,7 @@ export default {
     
         this.lastCallTime = Date.now(); // Aggiorna il tempo dell'ultima chiamata
       } catch (error) {
-        // console.error(error);
+        console.error(error);
       }
     },
     

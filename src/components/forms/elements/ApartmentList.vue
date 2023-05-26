@@ -141,7 +141,7 @@ export default {
 
   data() {
     return {
-      API_KEY: 'TyAuLPU0fDwhRivYyXjSFgM91eRVywYA',
+      API_KEY: 'tg2x9BLlB0yJ4y7Snk5XhTOsnakmpgUO',
       apartments: [],
       filteredApartments: [],
       filters: {
@@ -272,6 +272,7 @@ export default {
       this.filters.listServices = JSON.parse(sessionStorage.getItem('listServices')) || [];
       try {
         // Continua con il normale processo di ricerca
+        
         this.coordinate = await this.searchLocation(this.localita);
         if (this.coordinate) {
           const response = await getAppartamenti(
