@@ -12,16 +12,26 @@ export default {
   data() {
     return {
       apartments: [],
+      standardApartments: [],
       apartment: "",
       currentPage: 1,
       apartmentsPerPage: 3,
     };
   },
   created() {
-    axios.get("http://127.0.0.1:8000/api/standard").then((response) => {
+    axios.get("http://127.0.0.1:8000/api/sponsored/all").then((response) => {
       this.apartments = response.data;
-      this.updateApartmentsPerPage(); // Aggiorniamo apartmentsPerPage all'inizio
+      this.updateApartmentsPerPage(); // Chiamata per gli ppartamenti sponsorizzati
     })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    axios.get("http://127.0.0.1:8000/api/standard")
+      .then((response) => {
+        this.standardApartments = response.data; // hiamata per gli ppartamenti standard
+        //this.updateApartmentsPerPage(); // Aggiorniamo apartmentsPerPage all'inizio
+      })
       .catch((error) => {
         console.error(error);
       });
@@ -132,7 +142,7 @@ export default {
   <div class="container card-container my-2">
     <h2 class="text-center mb-3">Appartamenti in evidenza</h2>
     <div class="card-grid">
-      <div v-for="(apartment, index) in apartments" :key="apartment.id">
+      <div v-for="(apartment, index) in standardApartments" :key="apartment.id">
         <div class="card-column h-100">
           <Card :apartment="apartment" />
         </div>
