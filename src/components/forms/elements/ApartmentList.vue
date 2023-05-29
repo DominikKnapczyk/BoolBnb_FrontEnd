@@ -18,24 +18,28 @@
                   <div class="row">
                     <div class="col-md-6 col-lg-12">
                       <label for="min_rooms_num">Numero minimo stanze</label>
-                      <input class="form-control" type="number" id="min_rooms_num" v-model="filters.minRoomsNum" @input="searchFilters" min="1" max="20">
+                      <input class="form-control" type="number" id="min_rooms_num" v-model="filters.minRoomsNum"
+                        @input="searchFilters" min="1" max="20">
                     </div>
                     <div class="col-md-6 col-lg-12">
                       <label for="max_rooms_num">Numero massimo stanze</label>
-                      <input class="form-control" type="number" id="max_rooms_num" v-model="filters.maxRoomsNum" @input="searchFilters" min="1" max="20">
+                      <input class="form-control" type="number" id="max_rooms_num" v-model="filters.maxRoomsNum"
+                        @input="searchFilters" min="1" max="20">
                     </div>
                   </div>
 
                   <hr>
 
-                  <div class="row"> 
+                  <div class="row">
                     <div class="col-md-6 col-lg-12">
                       <label for="min_beds">Numero minimo posti letto</label>
-                      <input class="form-control" type="number" id="min_beds" v-model="filters.minBeds" @input="searchFilters" min="1" max="20">
+                      <input class="form-control" type="number" id="min_beds" v-model="filters.minBeds"
+                        @input="searchFilters" min="1" max="20">
                     </div>
                     <div class="col-md-6 col-lg-12">
                       <label for="max_beds">Numero massimo posti letto</label>
-                      <input class="form-control" type="number" id="max_beds" v-model="filters.maxBeds" @input="searchFilters" min="1" max="20">
+                      <input class="form-control" type="number" id="max_beds" v-model="filters.maxBeds"
+                        @input="searchFilters" min="1" max="20">
                     </div>
                   </div>
 
@@ -44,11 +48,13 @@
                   <div class="row">
                     <div class="col-md-6 col-lg-12">
                       <label for="min_price">Prezzo minimo</label>
-                      <input class="form-control" type="number" id="min_price" v-model="filters.minPrice" @input="searchFilters" min="1" max="99999">
+                      <input class="form-control" type="number" id="min_price" v-model="filters.minPrice"
+                        @input="searchFilters" min="1" max="99999">
                     </div>
                     <div class="col-md-6 col-lg-12">
                       <label for="max_price">Prezzo massimo</label>
-                      <input class="form-control" type="number" id="max_price" v-model="filters.maxPrice" @input="searchFilters" min="1" max="99999">
+                      <input class="form-control" type="number" id="max_price" v-model="filters.maxPrice"
+                        @input="searchFilters" min="1" max="99999">
                     </div>
                   </div>
 
@@ -81,31 +87,69 @@
     </div>
     <div class="col-lg-9 my">
       <h3>Apartamenti</h3> <!-- Aggiunta della scritta sopra le card -->
-      <p>Trovat{{ filteredApartments.length !== 1 ? 'i' : 'o' }} {{ filteredApartments.length }} risultat{{ filteredApartments.length !== 1 ? 'i' : 'o' }}.</p>
+      <p>Trovat{{ filteredApartments.length !== 1 ? 'i' : 'o' }} {{ filteredApartments.length }} risultat{{
+        filteredApartments.length !== 1 ? 'i' : 'o' }}.</p>
       <div class="d-flex flex-wrap">
 
         <!-- Appartamenti filtrati -->
-        <div
-            v-for="apartment in filteredApartments"
-            :key="apartment.id"
-            class="card mb-3"
-            :class="{ 'border-danger': apartment.isSponsored }"
-            style="flex-basis: 100%;"
-          >
+        <div v-for="apartment in filteredApartments" :key="apartment.id" class="card mb-3" style="flex-basis: 100%;">
           <div class="row no-gutters">
-            <div class="col-md-4 d-flex align-items-center justify-content-center ps-3">
-              <img :src="apartment.image" class="card-img p-2 h-100" alt="Apartment Image">
+            <!-- <div class="img-container position-relative">
+              <img class="card-img-top rounded-top" :src="apartment.image" alt="Card image cap" />
+              <div class="services">
+                  <i v-for="service in apartment.services" :class="'me-3 text-light bi ' + service.icon"
+                      :title="service.title"></i>
+                  <div class="featured bg-warning bg-opacity-50">Consigliato</div>
+              </div>
+          </div> -->
+            <div class="col-md-4 d-flex align-items-center justify-content-center position-relative">
+              <img :src="apartment.image" class="card-img h-100" alt="Apartment Image">
+              <div v-if="apartment.isSponsored"
+                class="featured bg-warning bg-opacity-50 position-absolute start-50 translate-middle-x">
+                Consigliato
+              </div>
+              <div class="services">
+                <i v-for="service in apartment.services" :class="'me-3 text-light bi ' + service.icon"
+                  :title="service.title"></i>
+              </div>
             </div>
             <div class="col-md-8">
               <div class="card-body">
                 <h5 class="card-title">{{ apartment.title }}</h5>
                 <p class="card-text">{{ apartment.description }}</p>
+                <div class="container">
+                  <div class="row row-cols-4">
+                    <div class="col">
+                      <strong>Posti letto</strong>:
+                      {{ apartment.single_beds + apartment.double_beds }}
+                    </div>
+                    <div class="col">
+                      <strong>Bagni</strong>: {{ apartment.bathrooms }}
+                    </div>
+                    <div class="col">
+                      <strong>Camere</strong>: {{ apartment.rooms }}
+                    </div>
+                    <div class="col">
+                      <strong>mq</strong>: {{ apartment.square_meters }}
+                    </div>
+                  </div>
+                </div>
+                <div class="mt-3">
+                  <p class="mb-0">
+                    <strong>Servizi: </strong>
+                    <span v-for="(service, index) in apartment.services">{{ service.title
+                    }}<span v-if="index != apartment.services.length - 1">, </span>
+                      <span v-else>.</span>
+                    </span>
+                  </p>
+                </div>
               </div>
               <div class="card-footer mt-xxl-5 pt-xxl-5">
-                <p class="card-text mb-2">{{ apartment.price }} € / notte</p>
+                <p class="card-text mb-2 text-success"><strong>{{ apartment.price }}</strong><span class="text-dark"> € /
+                    notte</span></p>
                 <hr>
                 <router-link :to="'/apartment/' + apartment.id + '?advancedredirect'">
-                 <span class="btn btn-secondary">Scopri di più</span>
+                  <span class="btn btn-secondary">Scopri di più</span>
                 </router-link>
               </div>
             </div>
@@ -196,16 +240,16 @@ export default {
     },
 
     'filters.minRoomsNum': {
-    handler: function(newVal) {
-      this.applyFilters();
-      // Salva il valore corrente in sessionStorage
-      sessionStorage.setItem('minRoomsNum', newVal);
-    },
-    immediate: true,
+      handler: function (newVal) {
+        this.applyFilters();
+        // Salva il valore corrente in sessionStorage
+        sessionStorage.setItem('minRoomsNum', newVal);
+      },
+      immediate: true,
     },
 
     'filters.maxRoomsNum': {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.applyFilters();
         // Salva il valore corrente in sessionStorage
         sessionStorage.setItem('maxRoomsNum', newVal);
@@ -214,7 +258,7 @@ export default {
     },
 
     'filters.minBeds': {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.applyFilters();
         // Salva il valore corrente in sessionStorage
         sessionStorage.setItem('minBeds', newVal);
@@ -223,7 +267,7 @@ export default {
     },
 
     'filters.maxBeds': {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.applyFilters();
         // Salva il valore corrente in sessionStorage
         sessionStorage.setItem('maxBeds', newVal);
@@ -232,7 +276,7 @@ export default {
     },
 
     'filters.minPrice': {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.applyFilters();
         // Salva il valore corrente in sessionStorage
         sessionStorage.setItem('minPrice', newVal);
@@ -241,7 +285,7 @@ export default {
     },
 
     'filters.maxPrice': {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.applyFilters();
         // Salva il valore corrente in sessionStorage
         sessionStorage.setItem('maxPrice', newVal);
@@ -250,7 +294,7 @@ export default {
     },
 
     'filters.listServices': {
-      handler: function(newVal) {
+      handler: function (newVal) {
         this.applyFilters();
         // Salva il valore corrente in sessionStorage
         sessionStorage.setItem('listServices', JSON.stringify(newVal));
@@ -262,7 +306,7 @@ export default {
   methods: {
     // AGGIORNA LISTA APPARTAMENTI
     async updateList() {
-      
+
       this.filters.minRoomsNum = sessionStorage.getItem('minRoomsNum') || '';
       this.filters.maxRoomsNum = sessionStorage.getItem('maxRoomsNum') || '';
       this.filters.minBeds = sessionStorage.getItem('minBeds') || '';
@@ -272,7 +316,7 @@ export default {
       this.filters.listServices = JSON.parse(sessionStorage.getItem('listServices')) || [];
       try {
         // Continua con il normale processo di ricerca
-        
+
         this.coordinate = await this.searchLocation(this.localita);
         if (this.coordinate) {
           const response = await getAppartamenti(
@@ -291,12 +335,12 @@ export default {
 
     // Verifica se l'appartamento ha una sponsorizzazione in corso
     checkSponsorship(apartment) {
-        const currentDate = new Date();
-        return apartment.plans.some((plan) => {
-          const endDate = new Date(plan.pivot.end_date);
-          return endDate > currentDate;
-        });
-      },
+      const currentDate = new Date();
+      return apartment.plans.some((plan) => {
+        const endDate = new Date(plan.pivot.end_date);
+        return endDate > currentDate;
+      });
+    },
 
     applyFilters() {
 
@@ -309,22 +353,22 @@ export default {
       const maxPrice = parseInt(this.filters.maxPrice);
 
 
-   
+
       // APPLICA FILTRI APPARTAMENTI
       this.filteredApartments = this.apartments.filter((apartment) => {
         // Filtro per il numero di stanze
         if (minRoomsNum && apartment.rooms < minRoomsNum) {
           return false;
         }
-        
+
         // Filtro per il numero massimo di stanze
         if (maxRoomsNum && apartment.rooms > maxRoomsNum) {
           return false;
         }
 
 
-         // Calcolo del numero di posti letto
-            const calculatedBeds = apartment.single_beds + (apartment.double_beds * 2);
+        // Calcolo del numero di posti letto
+        const calculatedBeds = apartment.single_beds + (apartment.double_beds * 2);
 
         // Filtro per il numero di posti letto
         if (
@@ -334,7 +378,7 @@ export default {
           return false;
         }
 
-          // Filtro per il prezzo
+        // Filtro per il prezzo
         if ((minPrice && parseInt(apartment.price) < minPrice) || (maxPrice && parseInt(apartment.price) > maxPrice)) {
           return false;
         }
@@ -401,7 +445,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .numType {
   max-width: 5rem;
   margin-top: 0.3rem;
@@ -425,4 +469,21 @@ export default {
   background-color: #dc3555;
 }
 
+.featured {
+  color: white;
+  text-align: center;
+  bottom: 1.5rem;
+  width: 92.5%;
+  border-radius: 30px 30px 0px 0px;
+  background-color: silver;
+}
+
+.services {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  width: 92.5%;
+  text-align: center;
+  border-radius: 0px 0px 5px 5px;
+}
 </style>
